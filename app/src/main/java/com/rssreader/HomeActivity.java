@@ -14,9 +14,10 @@ public class HomeActivity extends AppCompatActivity implements DataRetriever.Dat
 
     private static final String TAG = "HomeActivity";
     DataRetriever mDataRetriever;
-    XmlParser parser;
+    XmlParser xmlParser;
     TextView textView;
-    String url = "http://rss.jagran.com/rss/news/national.xml";
+    //String url = "http://rss.jagran.com/rss/news/national.xml";
+    String url = "http://rss.jagran.com/local/uttar-pradesh/kanpur-city.xml";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +41,16 @@ public class HomeActivity extends AppCompatActivity implements DataRetriever.Dat
     }
 
     @Override
-    public void dataRecieved(String stringObject) {
+    public void dataRecieved(final String stringObject) {
         Log.d(TAG, "data recieved : " + stringObject.toString());
-        parser = XmlParser.getParser();
-        parser.parse(stringObject);
+        xmlParser = XmlParser.getParser();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                xmlParser.parse(stringObject);
+            }
+        });
+        thread.start();
 
         textView.setText(stringObject.toString());
     }
