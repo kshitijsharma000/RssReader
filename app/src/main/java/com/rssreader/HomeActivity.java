@@ -1,7 +1,10 @@
 package com.rssreader;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -16,18 +19,38 @@ public class HomeActivity extends AppCompatActivity implements DataRetriever.Dat
     DataRetriever mDataRetriever;
     XmlParser xmlParser;
     TextView textView;
-    //String url = "http://rss.jagran.com/rss/news/national.xml";
-    String url = "http://rss.jagran.com/local/uttar-pradesh/kanpur-city.xml";
+
+    Toolbar toolbar;
+    TabLayout tabLayout;
+    ViewPager viewPager;
+
+    String url = "http://rss.jagran.com/rss/news/national.xml";
+    //String url = "http://rss.jagran.com/local/uttar-pradesh/kanpur-city.xml";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        textView = (TextView) findViewById(R.id.textview);
         mDataRetriever = new DataRetriever(this);
+        // mDataRetriever.makeStringRequest(url);
 
-        mDataRetriever.makeStringRequest(url);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ReaderPagerAdapter pagerAdapter = new ReaderPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
     }
 
     @Override
@@ -44,6 +67,7 @@ public class HomeActivity extends AppCompatActivity implements DataRetriever.Dat
     public void dataRecieved(final String stringObject) {
         Log.d(TAG, "data recieved : " + stringObject.toString());
         xmlParser = XmlParser.getParser();
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
