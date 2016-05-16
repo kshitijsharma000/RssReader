@@ -1,6 +1,7 @@
 package com.rssreader;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +10,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,7 +30,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
     private RecyclerView recyclerView;
     private DataRetriever dataRetriever;
     private ProgressDialog progressDialog;
-    private NewsAdapter newsAdapter;
+    private NewsItemAdapter newsItemAdapter;
     private Channel mChannel;
     private String mUrl;
 
@@ -40,7 +43,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         setupProgressDialog();
         showDialog();
 
-        newsAdapter = new NewsAdapter(getActivity());
+        newsItemAdapter = new NewsItemAdapter(getActivity());
         dataRetriever = new DataRetriever(this);
         mUrl = getArguments().getString("url");
         dataRetriever.makeStringRequest(mUrl);
@@ -59,7 +62,20 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(newsAdapter);
+        recyclerView.setAdapter(newsItemAdapter);
+
+        recyclerView.addOnItemTouchListener(new DragController(getActivity(), new Clicklistener() {
+            @Override
+            public void Onclick(View view, int position) {
+                System.out.println("inside activity on click : " + position);
+            }
+
+            @Override
+            public void OnLongclick(View view, int position) {
+                System.out.println("inside activity on long click : " + position);
+            }
+        }));
+
     }
 
     @Override
@@ -109,6 +125,12 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         Log.d(TAG, "Volley Error : " + error.toString());
     }
 
+    interface Clicklistener {
+        public void Onclick(View view, int position);
+
+        public void OnLongclick(View view, int position);
+    }
+
     class service extends AsyncTask<String, String, String> {
 
         @Override
@@ -121,10 +143,52 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            newsAdapter.setItemsList(mChannel.getItems());
-            newsAdapter.notifyDataSetChanged();
+            newsItemAdapter.setItemsList(mChannel.getItems());
+            newsItemAdapter.notifyDataSetChanged();
             Log.d(TAG, s);
             hideDialog();
+        }
+    }
+
+    private class DragController implements RecyclerView.OnItemTouchListener {
+        private GestureDetector gestureDetector;
+        private Clicklistener clicklistener;
+
+        public DragController(Context context, final Clicklistener clicklistener) {
+            this.clicklistener = clicklistener;
+            this.gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    //return super.onSingleTapUp(e);
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && clicklistener != null) {
+                        clicklistener.OnLongclick(child, recyclerView.getChildAdapterPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            if (child != null && clicklistener != null && gestureDetector.onTouchEvent(e)) {
+                clicklistener.Onclick(child, rv.getChildAdapterPosition(child));
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
         }
     }
 }

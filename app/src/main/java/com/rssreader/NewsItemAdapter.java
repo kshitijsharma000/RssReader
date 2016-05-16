@@ -15,27 +15,27 @@ import java.util.ArrayList;
 /**
  * Created by Kshitij on 5/15/2016.
  */
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
+public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.ViewHolder> {
 
     private ArrayList<Channel.Item> items;
-    private Context context;
 
-    public NewsAdapter(Context context) {
+    public NewsItemAdapter(Context context) {
         this.items = new ArrayList<>();
-        this.context = context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mItemImage.setImageUrl("http://images.jagran.com/images/16_05_2016-mallya_16_s.jpg", Appcontroller.getmInstance().getImageLoader());
-        holder.mItemTitle.setText(items.get(position).getTitle().toString());
+        String combinedStr = items.get(position).getDescription();
+        String url = combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>')).split("=")[1];
+
+        holder.mItemImage.setImageUrl(url, Appcontroller.getmInstance().getImageLoader());
+        holder.mItemTitle.setText(items.get(position).getTitle());
     }
 
     public void setItemsList(ArrayList<Channel.Item> itemsList) {

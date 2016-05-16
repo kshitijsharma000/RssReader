@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">RssReader</string>
+    <string name="title_activity_news_item_detail">NewsItemDetailActivity</string>
 
 </resources>
