@@ -15,4 +15,10 @@ public final class Constants {
     public static final String Guid = "guid";
     public static final String IsPermanLink = "isPermaLink";
 
+    public static final String JAGRAN_NATIONAL = "http://rss.jagran.com/rss/news/national.xml";
+    public static final String JAGRAN_WORLD = "http://rss.jagran.com/rss/news/world.xml";
+    public static final String JAGRAN_BUSINESS = "http://rss.jagran.com/rss/news/business.xml";
+    public static final String JAGRAN_SPORTS = "http://rss.jagran.com/rss/news/sports.xml";
+    public static final String JAGRAN_ODDNEWS = "http://rss.jagran.com/rss/news/oddnews.xml";
+
 }

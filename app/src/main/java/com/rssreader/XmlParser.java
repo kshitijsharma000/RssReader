@@ -32,7 +32,8 @@ public class XmlParser {
         return instance;
     }
 
-    public Channel parse(String xml) {
+    public synchronized Channel parse(String xml) {
+        Log.d(TAG,"parse called for : " + xml);
         try {
             parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
