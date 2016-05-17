@@ -1,34 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/newsItemDetailMasterLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.rssreader.NewsItemDetailActivity">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/newsItemDetail_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/MyMaterialTheme.AppBarOverlay">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/newsItemDetail_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/MyMaterialTheme.PopupOverlay" />
-
+            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_news_item_detail" />
+    <FrameLayout
+        android:id="@+id/newsItemDetailContentFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <RelativeLayout
+            android:id="@+id/newsItemContentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/newsItemDetailTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Dummy..\n\n"
+                android:textSize="20dp" />
+
+            <View
+                android:id="@+id/horizontalDividerOne"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/newsItemDetailTitle"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+            <ImageView
+                android:id="@+id/newsItemDetailThumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_below="@+id/horizontalDividerOne"
+                android:layout_centerHorizontal="true"
+                android:scaleType="center"
+                android:src="@mipmap/ic_launcher" />
+
+            <View
+                android:id="@+id/horizontalDividerTwo"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/newsItemDetailThumbnail"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+            <TextView
+                android:id="@+id/newsItemDetailDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/horizontalDividerTwo"
+                android:padding="5dp"
+                android:text="Desc..\n\n\n\n\n"
+                android:textColor="@android:color/black" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/newsItemDetailRightNav"
+                android:layout_width="40dp"
+                android:layout_height="150dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center|right"
+                android:alpha="1"
+                android:clickable="true"
+                android:scaleType="center"
+                android:src="@drawable/nav_right18" />
+
+            <ImageButton
+                android:id="@+id/newsItemDetailLeftNav"
+                android:layout_width="40dp"
+                android:layout_height="150dp"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center|left"
+                android:clickable="true"
+                android:scaleType="center"
+                android:src="@drawable/nav_left18" />
+        </RelativeLayout>
+
+    </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:layout_margin="20dp"
+        android:src="@drawable/share24"
+        android:tint="#125688"
+        app:elevation="5dp"
+        app:layout_anchor="@id/newsItemDetailMasterLayout"
+        app:layout_anchorGravity="bottom|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>

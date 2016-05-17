@@ -43,6 +43,8 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         setupProgressDialog();
         showDialog();
 
+        getActivity().setProgressBarIndeterminateVisibility(true);
+
         newsItemAdapter = new NewsItemAdapter(getActivity());
         dataRetriever = new DataRetriever(this);
         mUrl = getArguments().getString("url");
@@ -146,6 +148,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
             newsItemAdapter.setItemsList(mChannel.getItems());
             newsItemAdapter.notifyDataSetChanged();
             Log.d(TAG, s);
+            getActivity().setProgressBarIndeterminateVisibility(false);
             hideDialog();
         }
     }
