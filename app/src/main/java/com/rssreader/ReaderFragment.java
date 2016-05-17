@@ -2,6 +2,7 @@ package com.rssreader;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -40,8 +41,8 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setupProgressDialog();
-        showDialog();
+        //setupProgressDialog();
+        //showDialog();
 
         getActivity().setProgressBarIndeterminateVisibility(true);
 
@@ -49,6 +50,9 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         dataRetriever = new DataRetriever(this);
         mUrl = getArguments().getString("url");
         dataRetriever.makeStringRequest(mUrl);
+
+        getActivity().setProgressBarIndeterminateVisibility(true);
+        getActivity().setProgressBarVisibility(true);
 
         View view = inflater.inflate(R.layout.reader_fragment, container, false);
         return view;
@@ -69,15 +73,26 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         recyclerView.addOnItemTouchListener(new DragController(getActivity(), new Clicklistener() {
             @Override
             public void Onclick(View view, int position) {
-                System.out.println("inside activity on click : " + position);
+                System.out.println("inside fragment on click : " + position);
+                packSendItem(position);
             }
 
             @Override
             public void OnLongclick(View view, int position) {
-                System.out.println("inside activity on long click : " + position);
+                System.out.println("inside fragment on long click : " + position);
             }
         }));
 
+    }
+
+    private void packSendItem(int pos) {
+        Channel.Item mItem = newsItemAdapter.getItem(pos);
+        Intent intent = new Intent(getActivity(), NewsItemDetailActivity.class);
+        intent.putExtra("title", mItem.getTitle());
+        intent.putExtra("desc", mItem.getDescription());
+        intent.putExtra("date", mItem.getPubDate());
+
+        startActivity(intent);
     }
 
     @Override
@@ -148,8 +163,10 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
             newsItemAdapter.setItemsList(mChannel.getItems());
             newsItemAdapter.notifyDataSetChanged();
             Log.d(TAG, s);
+
             getActivity().setProgressBarIndeterminateVisibility(false);
-            hideDialog();
+            getActivity().setProgressBarVisibility(false);
+            //hideDialog();
         }
     }
 

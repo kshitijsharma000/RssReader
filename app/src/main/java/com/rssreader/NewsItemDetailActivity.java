@@ -1,16 +1,21 @@
 package com.rssreader;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.android.volley.toolbox.NetworkImageView;
+import com.rssreader.netutils.Appcontroller;
 
 public class NewsItemDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -20,6 +25,10 @@ public class NewsItemDetailActivity extends AppCompatActivity implements View.On
     ImageButton rightNav;
     ImageButton leftNav;
     FrameLayout contentFrameLayout;
+    TextView mNewsItemTitle;
+    TextView mNewsItemDesc;
+    NetworkImageView mNewsItemImage;
+    FloatingActionButton fab;
 
     Animation animationOFF;
 
@@ -33,6 +42,7 @@ public class NewsItemDetailActivity extends AppCompatActivity implements View.On
 
         actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.app_name);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         rightNav = (ImageButton) findViewById(R.id.newsItemDetailRightNav);
         leftNav = (ImageButton) findViewById(R.id.newsItemDetailLeftNav);
@@ -45,18 +55,44 @@ public class NewsItemDetailActivity extends AppCompatActivity implements View.On
         leftNav.setOnClickListener(this);
 
         contentFrameLayout = (FrameLayout) findViewById(R.id.newsItemDetailContentFrame);
-        contentFrameLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rightNav.setVisibility(View.VISIBLE);
-                rightNav.setAlpha(1.0f);
-                rightNav.startAnimation(animationOFF);
+        contentFrameLayout.setOnClickListener(this);
 
-                leftNav.setVisibility(View.VISIBLE);
-                leftNav.setAlpha(1.0f);
-                leftNav.startAnimation(animationOFF);
-            }
-        });
+        fab = (FloatingActionButton) findViewById(R.id.newsItemDetailFabShare);
+        fab.setOnClickListener(this);
+
+        mNewsItemTitle = (TextView) findViewById(R.id.newsItemDetailTitle);
+        mNewsItemDesc = (TextView) findViewById(R.id.newsItemDetailDescription);
+        mNewsItemImage = (NetworkImageView) findViewById(R.id.newsItemDetailThumbnail);
+
+        Intent intent = getIntent();
+        mNewsItemTitle.setText(intent.getStringExtra("title"));
+        mNewsItemDesc.setText(getDesc(intent.getStringExtra("desc")));
+
+        String url = getImageUrl(intent.getStringExtra("desc"));
+        if (url == null)
+            mNewsItemImage.setImageResource(R.mipmap.jagran_icon);
+        else
+            mNewsItemImage.setImageUrl(url, Appcontroller.getmInstance().getImageLoader());
+    }
+
+    private String getImageUrl(String combinedStr) {
+        if (combinedStr.indexOf('<') == -1 || combinedStr.indexOf('>') == -1)
+            return null;
+        else
+            return combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>'))
+                    .split("=")[1].replace("_s","");
+    }
+
+
+    private String getDesc(String combinedStr) {
+        int index = combinedStr.indexOf(">");
+        if (combinedStr.length() > 1) {
+            if (index == -1)
+                return combinedStr;
+            else
+                return combinedStr.substring(combinedStr.indexOf('>') + 1, combinedStr.length());
+        } else
+            return "";
     }
 
     private void setNavigationAnim() {
@@ -83,12 +119,24 @@ public class NewsItemDetailActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.newsItemDetailRightNav:
-                Log.d(TAG,"clicked right nav key");
+                Log.d(TAG, "clicked right nav key");
                 break;
             case R.id.newsItemDetailLeftNav:
-                Log.d(TAG,"Clicked left Nav key");
+                Log.d(TAG, "Clicked left Nav key");
+                break;
+            case R.id.newsItemDetailContentFrame:
+                rightNav.setVisibility(View.VISIBLE);
+                rightNav.setAlpha(1.0f);
+                rightNav.startAnimation(animationOFF);
+
+                leftNav.setVisibility(View.VISIBLE);
+                leftNav.setAlpha(1.0f);
+                leftNav.startAnimation(animationOFF);
+                break;
+            case R.id.newsItemDetailFabShare:
+                Log.d(TAG, "clicked Fab");
                 break;
         }
     }

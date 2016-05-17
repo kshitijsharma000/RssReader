@@ -1,5 +1,6 @@
 package com.rssreader;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -233,7 +234,7 @@ public class Channel {
         }
     }
 
-    class Item {
+    class Item implements Serializable{
         private String title;
         private String link;
         private String description;
@@ -244,22 +245,6 @@ public class Channel {
         private Guid guid;
         private String pubDate;
         private Source source;
-
-        public Item() {
-        }
-
-        public Item(Item item) {
-            this.title = item.getTitle();
-            this.link = item.getLink();
-            this.description = item.getDescription();
-            this.author = item.getAuthor();
-            this.category = item.getCategory();
-            this.comments = item.getComments();
-            this.enclosure = item.getEnclosure();
-            this.guid = item.getGuid();
-            this.pubDate = item.getPubDate();
-            this.source = item.getSource();
-        }
 
         public String getTitle() {
             return title;
@@ -341,7 +326,7 @@ public class Channel {
             this.source = source;
         }
 
-        class Source {
+        class Source{
             private String val;
             private String attrUrl;
 
@@ -362,7 +347,7 @@ public class Channel {
             }
         }
 
-        class Enclosure {
+        class Enclosure{
             String val;
             String attrUrl;
             String attrlength;
@@ -401,7 +386,7 @@ public class Channel {
             }
         }
 
-        class Category {
+        class Category{
             private String val;
             private String attrDomain;
 
@@ -422,7 +407,7 @@ public class Channel {
             }
         }
 
-        class Guid {
+        class Guid{
             private String val;
             private String attrisPermaLink;
 

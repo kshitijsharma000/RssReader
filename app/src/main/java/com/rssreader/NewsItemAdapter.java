@@ -2,7 +2,6 @@ package com.rssreader;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,11 +38,8 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         Channel.Item item = items.get(position);
 
-        String combinedStr = item.getDescription();
-        String url = "";
-        Log.d(TAG, combinedStr);
-        if (checkImageExists(combinedStr))
-            url = combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>')).split("=")[1];
+        String url = getImageUrl(item.getDescription());
+
 
         //"17 May 2016 08:26:31 GMT"
         Date date = null;
@@ -55,7 +51,7 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.ViewHo
             e.printStackTrace();
         }
 
-        if (url.equals(""))
+        if (url == null)
             holder.mItemImage.setImageResource(R.mipmap.jagran_icon);
         else
             holder.mItemImage.setImageUrl(url, Appcontroller.getmInstance().getImageLoader());
@@ -63,11 +59,11 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.ViewHo
         holder.mItemDate.setText(formatOut.format(date));
     }
 
-    private boolean checkImageExists(String combinedStr) {
+    private String getImageUrl(String combinedStr) {
         if (combinedStr.indexOf('<') == -1 || combinedStr.indexOf('>') == -1)
-            return false;
+            return null;
         else
-            return true;
+            return combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>')).split("=")[1];
     }
 
     public void setItemsList(ArrayList<Channel.Item> itemsList) {
