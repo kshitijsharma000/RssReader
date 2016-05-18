@@ -1,21 +1,19 @@
 package com.rssreader;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Window;
-import android.widget.TextView;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-import com.rssreader.netutils.DataRetriever;
-
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     private static final String TAG = "HomeActivity";
 
-    Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
 
@@ -25,13 +23,12 @@ public class HomeActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        //setContentView(R.layout.activity_home);
 
-        /*setProgressBarIndeterminateVisibility(true);
-        setProgressBarVisibility(true);*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setProgressBarIndeterminateVisibility(true);
+        setProgressBarVisibility(true);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         setupViewPager(viewPager);
@@ -40,6 +37,11 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_home;
     }
 
     private void setupViewPager(ViewPager viewPager) {

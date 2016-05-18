@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/newsItemDetailMasterLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -12,7 +11,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/newsItemDetail_toolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -88,14 +87,14 @@
                 android:id="@+id/newsItemDetailClickMore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_below="@id/newsItemDetailDescription"
                 android:layout_marginTop="10dp"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:text="Click here for more >>"
-                android:hapticFeedbackEnabled="true"
                 android:clickable="true"
+                android:gravity="center"
+                android:hapticFeedbackEnabled="true"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="Click here for more >>"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="15dp" />
 
@@ -112,6 +111,7 @@
                 android:layout_height="150dp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center|right"
+                android:alpha="0.75"
                 android:clickable="true"
                 android:scaleType="center"
                 android:src="@drawable/nav_right18" />
@@ -121,22 +121,12 @@
                 android:layout_width="30dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center|left"
+                android:alpha="0.75"
                 android:clickable="true"
                 android:scaleType="center"
                 android:src="@drawable/nav_left18" />
         </RelativeLayout>
 
     </FrameLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/newsItemDetailFabShare"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_margin="16dp"
-        android:hapticFeedbackEnabled="true"
-        android:src="@drawable/share24gray"
-        app:elevation="5dp"
-        app:layout_anchor="@id/newsItemDetailMasterLayout"
-        app:layout_anchorGravity="bottom|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>

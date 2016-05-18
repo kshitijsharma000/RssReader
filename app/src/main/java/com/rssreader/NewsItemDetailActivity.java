@@ -17,32 +17,27 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.rssreader.netutils.Appcontroller;
 
-public class NewsItemDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class NewsItemDetailActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "newsItemDetailActivity";
-    Toolbar toolbar;
-    ActionBar actionBar;
+
     ImageButton rightNav;
     ImageButton leftNav;
     FrameLayout contentFrameLayout;
     TextView mNewsItemTitle;
     TextView mNewsItemDesc;
     NetworkImageView mNewsItemImage;
-    FloatingActionButton fab;
+    TextView mLinkMore;
+    Intent intent;
 
     Animation animationOFF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_item_detail);
+       // setContentView(R.layout.activity_news_item_detail);
 
-        toolbar = (Toolbar) findViewById(R.id.newsItemDetail_toolbar);
-        setSupportActionBar(toolbar);
-
-        actionBar = getSupportActionBar();
-        actionBar.setTitle(R.string.app_name);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.app_name);
 
         rightNav = (ImageButton) findViewById(R.id.newsItemDetailRightNav);
         leftNav = (ImageButton) findViewById(R.id.newsItemDetailLeftNav);
@@ -57,14 +52,14 @@ public class NewsItemDetailActivity extends AppCompatActivity implements View.On
         contentFrameLayout = (FrameLayout) findViewById(R.id.newsItemDetailContentFrame);
         contentFrameLayout.setOnClickListener(this);
 
-        fab = (FloatingActionButton) findViewById(R.id.newsItemDetailFabShare);
-        fab.setOnClickListener(this);
+        mLinkMore = (TextView) findViewById(R.id.newsItemDetailClickMore);
+        mLinkMore.setOnClickListener(this);
 
         mNewsItemTitle = (TextView) findViewById(R.id.newsItemDetailTitle);
         mNewsItemDesc = (TextView) findViewById(R.id.newsItemDetailDescription);
         mNewsItemImage = (NetworkImageView) findViewById(R.id.newsItemDetailThumbnail);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         mNewsItemTitle.setText(intent.getStringExtra("title"));
         mNewsItemDesc.setText(getDesc(intent.getStringExtra("desc")));
 
@@ -73,6 +68,11 @@ public class NewsItemDetailActivity extends AppCompatActivity implements View.On
             mNewsItemImage.setImageResource(R.mipmap.jagran_icon);
         else
             mNewsItemImage.setImageUrl(url, Appcontroller.getmInstance().getImageLoader());
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_news_item_detail;
     }
 
     private String getImageUrl(String combinedStr) {
@@ -135,8 +135,12 @@ public class NewsItemDetailActivity extends AppCompatActivity implements View.On
                 leftNav.setAlpha(1.0f);
                 leftNav.startAnimation(animationOFF);
                 break;
-            case R.id.newsItemDetailFabShare:
-                Log.d(TAG, "clicked Fab");
+
+            case R.id.newsItemDetailClickMore:
+                Log.d(TAG, "open web view from here");
+                Intent intent = new Intent(this,NewsItemWebview.class);
+                intent.putExtra("link",this.intent.getStringExtra("link"));
+                startActivity(intent);
                 break;
         }
     }

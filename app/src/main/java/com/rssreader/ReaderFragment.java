@@ -91,7 +91,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         intent.putExtra("title", mItem.getTitle());
         intent.putExtra("desc", mItem.getDescription());
         intent.putExtra("date", mItem.getPubDate());
-
+        intent.putExtra("link", mItem.getLink());
         startActivity(intent);
     }
 
