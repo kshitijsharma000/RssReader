@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.rssreader.netutils.DataRetriever;
 
 import org.json.JSONObject;
@@ -41,18 +42,13 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //setupProgressDialog();
-        //showDialog();
-
-        getActivity().setProgressBarIndeterminateVisibility(true);
+        setupProgressDialog();
+        showDialog();
 
         newsItemAdapter = new NewsItemAdapter(getActivity());
         dataRetriever = new DataRetriever(this);
         mUrl = getArguments().getString("url");
         dataRetriever.makeStringRequest(mUrl);
-
-        getActivity().setProgressBarIndeterminateVisibility(true);
-        getActivity().setProgressBarVisibility(true);
 
         View view = inflater.inflate(R.layout.reader_fragment, container, false);
         return view;
@@ -162,11 +158,13 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
 
             newsItemAdapter.setItemsList(mChannel.getItems());
             newsItemAdapter.notifyDataSetChanged();
+
+            Gson gson = new Gson();
+            Log.d(TAG,gson.toJson(mChannel.getItems()));
+
             Log.d(TAG, s);
 
-            getActivity().setProgressBarIndeterminateVisibility(false);
-            getActivity().setProgressBarVisibility(false);
-            //hideDialog();
+            hideDialog();
         }
     }
 

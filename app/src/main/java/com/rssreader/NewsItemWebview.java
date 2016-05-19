@@ -11,7 +11,7 @@ public class NewsItemWebview extends BaseActivity {
 
     private static final String TAG = "WebView";
     WebView webView;
-    private String url;
+    private String mUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +25,8 @@ public class NewsItemWebview extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new NewsWebViewClient());
 
-        url = getIntent().getStringExtra("link");
-        webView.loadUrl(url);
+        mUrl = getIntent().getStringExtra("link");
+        webView.loadUrl(mUrl);
 
     }
 
@@ -35,15 +35,23 @@ public class NewsItemWebview extends BaseActivity {
         return R.layout.activity_news_item_webview;
     }
 
-    private class NewsWebViewClient extends WebViewClient{
+    private String findKey(String in) {
+        String[] arr = in.split("/");
+        return in.split("/")[arr.length - 1];
+    }
+
+    private class NewsWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (Uri.parse(url).getHost().equals(url)) {
-                Log.d(TAG,"")
+            Log.d(TAG, "url host : " + Uri.parse(url) + " " + Uri.parse(url).getHost());
+            Log.d(TAG,findKey(url));
+            Log.d(TAG,findKey(mUrl));
+            if (findKey(url).equals(findKey(mUrl))) {
                 return false;
             }
             return true;
         }
 
     }
+
 }
