@@ -21,10 +21,14 @@
         </activity>
         <activity
             android:name=".NewsItemDetailActivity"
-            android:parentActivityName=".HomeActivity"/>
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".NewsItemWebview"
-            android:parentActivityName=".NewsItemDetailActivity"/>
+            android:parentActivityName=".NewsItemDetailActivity" />
+
+        <service
+            android:name=".BGPullService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

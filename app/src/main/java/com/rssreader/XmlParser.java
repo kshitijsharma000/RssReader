@@ -3,8 +3,9 @@ package com.rssreader;
 import android.util.Log;
 import android.util.Xml;
 
-import com.rssreader.Channel.Image;
-import com.rssreader.Channel.Item.Guid;
+import com.rssreader.Model.Channel;
+import com.rssreader.Model.Channel.Image;
+import com.rssreader.Model.Channel.Item.Guid;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -33,7 +34,7 @@ public class XmlParser {
     }
 
     public synchronized Channel parse(String xml) {
-        Log.d(TAG,"parse called for : " + xml);
+        Log.d(TAG, "parse called for : " + xml);
         try {
             parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -57,7 +58,7 @@ public class XmlParser {
         mChannel = new Channel();
         ArrayList<Channel.Item> items = new ArrayList();
 
-        Log.d(TAG, parser.getEventType() + " ");
+      //  Log.d(TAG, parser.getEventType() + " ");
         parser.require(XmlPullParser.START_TAG, null, "channel");
 
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -65,7 +66,7 @@ public class XmlParser {
                 continue;
 
             String name = parser.getName();
-            Log.d(TAG, name);
+       //     Log.d(TAG, name);
             if (name.equals(Constants.Title)) {
                 mChannel.setTitle(readTag(parser, Constants.Title));
             } else if (name.equals(Constants.Description)) {
@@ -77,9 +78,9 @@ public class XmlParser {
             } else if (name.equals(Constants.Image)) {
                 mChannel.setImage(readImage(parser));
             } else if (name.equals(Constants.Item)) {
-                Log.d(TAG, "inside read Feed, adding item");
+             //   Log.d(TAG, "inside read Feed, adding item");
                 items.add(readItem(parser));
-                Log.d(TAG, "inside read Feed, added item : " + items.size());
+             //   Log.d(TAG, "inside read Feed, added item : " + items.size());
             } else {
                 skip(parser);
             }
@@ -89,7 +90,7 @@ public class XmlParser {
     }
 
     private Channel.Item readItem(XmlPullParser parser) throws IOException, XmlPullParserException {
-        Log.d(TAG, "inside read item ");
+     //   Log.d(TAG, "inside read item ");
         parser.require(XmlPullParser.START_TAG, null, "item");
 
         mItem = mChannel.new Item();
@@ -99,7 +100,7 @@ public class XmlParser {
                 continue;
             }
             String name = parser.getName();
-            Log.d(TAG, "read item : " + name);
+       //     Log.d(TAG, "read item : " + name);
 
             if (name.equals(Constants.Title)) {
                 mItem.setTitle(readTag(parser, Constants.Title));
@@ -115,12 +116,12 @@ public class XmlParser {
                 skip(parser);
             }
         }
-        Log.d(TAG, "read item done");
+      //  Log.d(TAG, "read item done");
         return mItem;
     }
 
     private Guid readGuid(XmlPullParser parser) throws IOException, XmlPullParserException {
-        Log.d(TAG, "inside read Guid");
+      //  Log.d(TAG, "inside read Guid");
         parser.require(XmlPullParser.START_TAG, null, Constants.Guid);
         String tag = parser.getName();
         Guid guid = null;
@@ -132,33 +133,33 @@ public class XmlParser {
         }
         //parser.nextTag();
         parser.require(XmlPullParser.END_TAG, null, Constants.Guid);
-        Log.d(TAG, "read Guid done : " + guid.getVal() + " " + guid.getAttrisPermaLink());
+     //   Log.d(TAG, "read Guid done : " + guid.getVal() + " " + guid.getAttrisPermaLink());
         return guid;
     }
 
 
     private String readTag(XmlPullParser parser, String mtagName) throws IOException, XmlPullParserException {
-        Log.d(TAG, "inside read tag : " + mtagName);
+     //   Log.d(TAG, "inside read tag : " + mtagName);
         parser.require(XmlPullParser.START_TAG, null, mtagName);
         String text = readText(parser);
         parser.require(XmlPullParser.END_TAG, null, mtagName);
-        Log.d(TAG, "read tag done : " + text);
+     //   Log.d(TAG, "read tag done : " + text);
         return text;
     }
 
     private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
         String result = null;
-        Log.d(TAG, "inside read text");
+     //   Log.d(TAG, "inside read text");
         if (parser.next() == XmlPullParser.TEXT) {
             result = parser.getText();
             parser.nextTag();
         }
-        Log.d(TAG, "read text done : " + result);
+     //   Log.d(TAG, "read text done : " + result);
         return result;
     }
 
     private Image readImage(XmlPullParser parser) throws IOException, XmlPullParserException {
-        Log.d(TAG, "read Image ");
+      //  Log.d(TAG, "read Image ");
         parser.require(XmlPullParser.START_TAG, null, "image");
 
         Image image = mChannel.new Image();
@@ -168,7 +169,7 @@ public class XmlParser {
                 continue;
             }
             String name = parser.getName();
-            Log.d(TAG, "read image" + name);
+      //      Log.d(TAG, "read image" + name);
             if (name.equals(Constants.Title)) {
                 image.setTitle(readTag(parser, Constants.Title));
             } else if (name.equals(Constants.Url)) {
@@ -183,7 +184,7 @@ public class XmlParser {
     }
 
     private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
-        Log.d(TAG, ">> skip called..");
+      //  Log.d(TAG, ">> skip called..");
         if (parser.getEventType() != XmlPullParser.START_TAG) {
             throw new IllegalStateException();
         }

@@ -1,4 +1,4 @@
-package com.rssreader;
+package com.rssreader.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -204,7 +204,7 @@ public class Channel {
         }
     }
 
-    class Image {
+    public class Image {
         private String url;
         private String title;
         private String link;
@@ -234,7 +234,7 @@ public class Channel {
         }
     }
 
-    class Item implements Serializable{
+    public class Item implements Serializable{
         private String title;
         private String link;
         private String description;
@@ -407,7 +407,7 @@ public class Channel {
             }
         }
 
-        class Guid{
+        public class Guid{
             private String val;
             private String attrisPermaLink;
 

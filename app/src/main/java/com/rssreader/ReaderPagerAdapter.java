@@ -20,8 +20,8 @@ public class ReaderPagerAdapter extends FragmentStatePagerAdapter {
 
     public ReaderPagerAdapter(FragmentManager fm) {
         super(fm);
-        mUrls = new ArrayList<>(Arrays.asList(Constants.JAGRAN_NATIONAL, Constants.JAGRAN_WORLD,
-                Constants.JAGRAN_BUSINESS, Constants.JAGRAN_SPORTS, Constants.JAGRAN_ODDNEWS));
+        mUrls = new ArrayList<>(Arrays.asList(Constants.JAGRAN_NATIONAL_URL, Constants.JAGRAN_WORLD_URL,
+                Constants.JAGRAN_BUSINESS_URL, Constants.JAGRAN_SPORTS_URL, Constants.JAGRAN_ODDNEWS_URL));
 
         mTitles = new ArrayList<>(Arrays.asList("राष्ट्रीय", "दुनिया", "बिजनेस", "खेल", "जरा हटके"));
     }

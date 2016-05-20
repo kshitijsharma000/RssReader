@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.rssreader.netutils.Appcontroller;
+import com.rssreader.Model.Channel;
 
 import java.text.DateFormat;
 import java.text.ParseException;

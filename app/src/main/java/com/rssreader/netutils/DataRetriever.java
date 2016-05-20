@@ -35,7 +35,7 @@ public class DataRetriever {
         Appcontroller.getmInstance().addtoRequestqueue(request);
     }
 
-    public void makeStringRequest(String url) {
+    public synchronized void makeStringRequest(String url) {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

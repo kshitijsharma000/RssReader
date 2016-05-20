@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.rssreader.netutils.DataRetriever;
+import com.rssreader.Model.Channel;
 
 import org.json.JSONObject;
 
@@ -48,7 +49,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         newsItemAdapter = new NewsItemAdapter(getActivity());
         dataRetriever = new DataRetriever(this);
         mUrl = getArguments().getString("url");
-        dataRetriever.makeStringRequest(mUrl);
+        //dataRetriever.makeStringRequest(mUrl);
 
         View view = inflater.inflate(R.layout.reader_fragment, container, false);
         return view;
@@ -160,7 +161,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
             newsItemAdapter.notifyDataSetChanged();
 
             Gson gson = new Gson();
-            Log.d(TAG,gson.toJson(mChannel.getItems()));
+            Log.d(TAG, gson.toJsonTree(mChannel.getItems()).toString());
 
             Log.d(TAG, s);
 
