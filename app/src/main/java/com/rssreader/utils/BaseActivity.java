@@ -1,8 +1,13 @@
-package com.rssreader;
+package com.rssreader.utils;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import com.rssreader.R;
 
 /**
  * Created by kshitij.sharma on 5/17/2016.
@@ -21,6 +26,17 @@ public abstract class BaseActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(R.string.app_name);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("Base Activity", "base activity options items selected");
+        return super.onOptionsItemSelected(item);
     }
 
     protected abstract int getLayoutResource();

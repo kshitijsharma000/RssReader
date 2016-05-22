@@ -16,12 +16,16 @@ public class ReaderPagerAdapter extends FragmentStatePagerAdapter {
     private static final int NUM = 10;
     private ArrayList<String> mTitles;
     private ArrayList<String> mUrls;
+    private ArrayList<String> mChannelTypes;
 
 
     public ReaderPagerAdapter(FragmentManager fm) {
         super(fm);
         mUrls = new ArrayList<>(Arrays.asList(Constants.JAGRAN_NATIONAL_URL, Constants.JAGRAN_WORLD_URL,
                 Constants.JAGRAN_BUSINESS_URL, Constants.JAGRAN_SPORTS_URL, Constants.JAGRAN_ODDNEWS_URL));
+
+        mChannelTypes = new ArrayList<>(Arrays.asList(Constants.JAGRAN_NATIONAL, Constants.JAGRAN_WORLD,
+                Constants.JAGRAN_BUSINESS, Constants.JAGRAN_SPORTS, Constants.JAGRAN_ODDNEWS));
 
         mTitles = new ArrayList<>(Arrays.asList("राष्ट्रीय", "दुनिया", "बिजनेस", "खेल", "जरा हटके"));
     }
@@ -31,6 +35,7 @@ public class ReaderPagerAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = new ReaderFragment();
         Bundle args = new Bundle();
         args.putString("url", mUrls.get(position));
+        args.putString("channeltype", mChannelTypes.get(position));
         fragment.setArguments(args);
         return fragment;
     }

@@ -1,14 +1,20 @@
 package com.rssreader;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.android.volley.VolleyError;
 import com.rssreader.Model.Channel;
 import com.rssreader.db.FeedReaderDBController;
 import com.rssreader.netutils.DataRetriever;
+import com.rssreader.utils.BaseActivity;
+import com.rssreader.utils.XmlParser;
 
 import org.json.JSONObject;
 
@@ -53,18 +59,26 @@ public class HomeActivity extends BaseActivity {
         startBackground();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("Homeactivity", "on create options menu");
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
     private void startBackground() {
         updateRequired = true;
         ExecutorService executorService = Executors.newFixedThreadPool(MAX_THREADS);
 
         for (int i = 0; i < mUrls.size(); i++) {
-            executorService.submit(new Worker(mUrls.get(i),mChannelTypes.get(i)));
+            executorService.submit(new Worker(mUrls.get(i), mChannelTypes.get(i)));
         }
 
         executorService.shutdown();
 
         try {
-            executorService.awaitTermination(1,TimeUnit.MINUTES);
+            executorService.awaitTermination(1, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -80,7 +94,17 @@ public class HomeActivity extends BaseActivity {
         viewPager.setAdapter(pagerAdapter);
     }
 
-    private class Worker implements Runnable,DataRetriever.DataListener{
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "home activity on options selected");
+        if (item.getItemId() == R.id.menu_settings) {
+            Snackbar.make(tabLayout, "Oops!! Check Internet", Snackbar.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
+
+    private class Worker implements Runnable, DataRetriever.DataListener {
 
         private String mUrl;
         private String mChannelType;
@@ -88,7 +112,7 @@ public class HomeActivity extends BaseActivity {
         private FeedReaderDBController dbController;
         private Channel mChannel;
 
-        public Worker(String mUrl,String mChannelType) {
+        public Worker(String mUrl, String mChannelType) {
             this.mUrl = mUrl;
             this.mChannelType = mChannelType;
         }
@@ -103,18 +127,17 @@ public class HomeActivity extends BaseActivity {
 
         @Override
         public void requestStart() {
-            Log.d("worker","request Started");
+            Log.d("worker", "request Started");
         }
 
         @Override
         public void dataRecieved(JSONObject jsonObject) {
-
         }
 
         @Override
         public void dataRecieved(String stringObject) {
             mChannel = XmlParser.getParser().parse(stringObject);
-            if(mChannel != null && updateRequired){
+            if (mChannel != null && updateRequired) {
                 dbController.updateDB();
                 updateRequired = false;
             }
@@ -123,7 +146,6 @@ public class HomeActivity extends BaseActivity {
 
         @Override
         public void error(VolleyError error) {
-
         }
     }
 }

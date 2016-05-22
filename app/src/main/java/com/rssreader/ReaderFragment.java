@@ -3,9 +3,12 @@ package com.rssreader;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,14 +16,16 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-import com.rssreader.netutils.DataRetriever;
 import com.rssreader.Model.Channel;
+import com.rssreader.db.FeedReaderDBController;
+import com.rssreader.netutils.DataRetriever;
+import com.rssreader.utils.XmlParser;
 
 import org.json.JSONObject;
 
@@ -31,11 +36,15 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
 
     private static final String TAG = "Reader Fragment";
     private RecyclerView recyclerView;
-    private DataRetriever dataRetriever;
+
     private ProgressDialog progressDialog;
     private NewsItemAdapter newsItemAdapter;
     private Channel mChannel;
+    private String mChannelType;
     private String mUrl;
+    private FeedReaderDBController dbController;
+    private DataRetriever dataRetriever;
+    private boolean updateDB;
 
     public ReaderFragment() {
     }
@@ -44,12 +53,22 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setupProgressDialog();
-        showDialog();
+        //      showDialog();
+
+        mChannelType = getArguments().getString("channeltype");
+        mUrl = getArguments().getString("url");
+        Log.d(TAG, "Channel type received is : " + mChannelType);
+
+
+        dataRetriever = new DataRetriever(this);
 
         newsItemAdapter = new NewsItemAdapter(getActivity());
-        dataRetriever = new DataRetriever(this);
-        mUrl = getArguments().getString("url");
-        //dataRetriever.makeStringRequest(mUrl);
+        dbController = new FeedReaderDBController(getActivity().getApplicationContext());
+
+        if (checkInternetConnection())
+            dataRetriever.makeStringRequest(mUrl);
+        else
+            new service().execute(mChannelType);
 
         View view = inflater.inflate(R.layout.reader_fragment, container, false);
         return view;
@@ -80,6 +99,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
             }
         }));
 
+
     }
 
     private void packSendItem(int pos) {
@@ -92,9 +112,38 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         startActivity(intent);
     }
 
+    private boolean checkInternetConnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            Log.d(TAG, "Internet is conencted..");
+            return true;
+        }
+        Log.d(TAG, "No Internet");
+        return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "reader fragment on options selected");
+        switch (item.getItemId()) {
+            case R.id.menu_sync:
+                if (checkInternetConnection()) {
+                    dataRetriever.makeStringRequest(mUrl);
+                    updateDB = true;
+                } else {
+                    Snackbar.make(recyclerView, "Oops!! Check Internet", Snackbar.LENGTH_SHORT).show();
+                }
+                break;
+        }
+        return true;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -121,23 +170,33 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
 
     @Override
     public void requestStart() {
-        Log.d(TAG, "News Item request Started : " + mUrl);
+        Log.d(TAG, "Volley Request Started.. " + mChannelType);
     }
 
     @Override
     public void dataRecieved(JSONObject jsonObject) {
-        //Not used as of now..
+
     }
 
     @Override
-    public void dataRecieved(final String stringObject) {
-        new service().execute(stringObject);
+    public void dataRecieved(String stringObject) {
+        mChannel = XmlParser.getParser().parse(stringObject);
+
+        if (updateDB) {
+            dbController.insertChanneltoDB(mChannel, mChannelType);
+            updateDB = false;
+        }
+        newsItemAdapter.setItemsList(mChannel.getItems());
+        newsItemAdapter.notifyDataSetChanged();
+
+        hideDialog();
     }
 
     @Override
     public void error(VolleyError error) {
-        Log.d(TAG, "Volley Error : " + error.toString());
+        Log.d(TAG, "Volley Error..");
     }
+
 
     interface Clicklistener {
         public void Onclick(View view, int position);
@@ -149,7 +208,8 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
 
         @Override
         protected String doInBackground(String... params) {
-            mChannel = XmlParser.getParser().parse(params[0]);
+            mChannel = dbController.readChannelFromDB(mChannelType);
+            Log.d(TAG, "items read from Db : " + mChannel.getItems().size());
             return "Parsing done";
         }
 
@@ -160,11 +220,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
             newsItemAdapter.setItemsList(mChannel.getItems());
             newsItemAdapter.notifyDataSetChanged();
 
-            Gson gson = new Gson();
-            Log.d(TAG, gson.toJsonTree(mChannel.getItems()).toString());
-
             Log.d(TAG, s);
-
             hideDialog();
         }
     }

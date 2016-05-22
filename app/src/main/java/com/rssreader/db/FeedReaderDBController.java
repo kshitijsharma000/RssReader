@@ -39,7 +39,7 @@ public class FeedReaderDBController {
         db.close();
     }
 
-    public void updateDB(){
+    public void updateDB() {
         getWritableDatabase();
         mDbHelper.onUpgrade(db, FeedReaderDbHelper.DATABASE_VERSION, FeedReaderDbHelper.DATABASE_VERSION);
     }
@@ -66,11 +66,19 @@ public class FeedReaderDBController {
 
         values.put(FeedReaderContract.FeedReaderEntry.COL_ITEMS, gson.toJsonTree(mChannel.getItems()).toString());
 
+        long ifExisted = db.update(FeedReaderContract.FeedReaderEntry.TABLE_NAME, values,
+                FeedReaderContract.FeedReaderEntry.COL_TITLE + "=?", new String[]{mChannelType});
 
-        newRowId = db.insert(FeedReaderContract.FeedReaderEntry.TABLE_NAME, null, values);
-        Log.d(TAG, "written new row to DB : " + newRowId);
-
-        return newRowId;
+        if (ifExisted <= 0) {
+            newRowId = db.insert(FeedReaderContract.FeedReaderEntry.TABLE_NAME, null, values);
+            Log.d(TAG, "written new row to DB : " + newRowId);
+            db.close();
+            return newRowId;
+        } else {
+            Log.d(TAG, "Record updated : " + ifExisted);
+        }
+        db.close();
+        return ifExisted;
     }
 
     public Channel readChannelFromDB(String mChannelType) {
@@ -80,7 +88,7 @@ public class FeedReaderDBController {
 
         Cursor cursor = db.rawQuery("select * from " + FeedReaderContract.FeedReaderEntry.TABLE_NAME
                 + " where " + FeedReaderContract.FeedReaderEntry.COL_TITLE
-                + "=" + mChannelType, null);
+                + "=" + "\"" + mChannelType + "\"" + ";", null);
 
         Log.d(TAG, "Cursor returned : " + cursor.getCount() + " values");
         if (cursor.getCount() == 0)
@@ -113,6 +121,7 @@ public class FeedReaderDBController {
         mChannel.setItems(items);
 
         cursor.close();
+        db.close();
         return mChannel;
     }
 }

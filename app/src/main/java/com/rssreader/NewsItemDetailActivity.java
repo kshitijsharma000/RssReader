@@ -2,11 +2,11 @@ package com.rssreader;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -16,11 +16,12 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.rssreader.netutils.Appcontroller;
+import com.rssreader.utils.BaseActivity;
 
 public class NewsItemDetailActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "newsItemDetailActivity";
-
+    private final int REQUEST_CODE = 999;
     ImageButton rightNav;
     ImageButton leftNav;
     FrameLayout contentFrameLayout;
@@ -29,15 +30,12 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
     NetworkImageView mNewsItemImage;
     TextView mLinkMore;
     Intent intent;
-
     Animation animationOFF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.activity_news_item_detail);
-
-        getSupportActionBar().setTitle(R.string.app_name);
+        // setContentView(R.layout.activity_news_item_detail);
 
         rightNav = (ImageButton) findViewById(R.id.newsItemDetailRightNav);
         leftNav = (ImageButton) findViewById(R.id.newsItemDetailLeftNav);
@@ -80,9 +78,19 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
             return null;
         else
             return combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>'))
-                    .split("=")[1].replace("_s","");
+                    .split("=")[1].replace("_s", "");
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG," detail option item selected");
+        switch (item.getItemId()) {
+            case R.id.menu_share:
+                Log.d(TAG,"sharing button pressed");
+                break;
+        }
+        return true;
+    }
 
     private String getDesc(String combinedStr) {
         int index = combinedStr.indexOf(">");
@@ -138,10 +146,26 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
 
             case R.id.newsItemDetailClickMore:
                 Log.d(TAG, "open web view from here");
-                Intent intent = new Intent(this,NewsItemWebview.class);
-                intent.putExtra("link",this.intent.getStringExtra("link"));
-                startActivity(intent);
+                Intent intent = new Intent(this, NewsItemWebview.class);
+                intent.putExtra("link", this.intent.getStringExtra("link"));
+                startActivityForResult(intent, REQUEST_CODE);
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "On activity result called");
+        if (requestCode == REQUEST_CODE) {
+            Log.d(TAG, "Finished web view");
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_news_detail, menu);
+        return true;
     }
 }

@@ -26,9 +26,6 @@
             android:name=".NewsItemWebview"
             android:parentActivityName=".NewsItemDetailActivity" />
 
-        <service
-            android:name=".BGPullService"
-            android:exported="false"></service>
     </application>
 
 </manifest>
