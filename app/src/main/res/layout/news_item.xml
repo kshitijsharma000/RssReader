@@ -42,11 +42,11 @@
                 android:id="@+id/newsItemTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
                 android:maxLines="4"
                 android:padding="5dp"
                 android:text="Dummy Title\n\n\n"
-                android:textSize="15dp" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/newsItemDate"
@@ -55,8 +55,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:textSize="10dp"
                 android:text="14 May 2016"
+                android:textSize="10dp"
                 android:textStyle="italic" />
         </RelativeLayout>
 
