@@ -2,8 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_share"
-        android:icon="@drawable/ic_menu_share"
-        android:title="share"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/webViewNavigationSwitch"
+        android:actionLayout="@layout/switch_layout"
+        android:title="Nav"
+        app:showAsAction="always" />
+
 </menu>

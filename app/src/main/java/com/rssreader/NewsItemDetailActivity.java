@@ -2,12 +2,12 @@ package com.rssreader;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
@@ -83,13 +83,13 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG," detail option item selected");
+        Log.d(TAG, " detail option item selected");
         switch (item.getItemId()) {
             case R.id.menu_share:
-                Log.d(TAG,"sharing button pressed");
-                break;
+                Log.d(TAG, "sharing button pressed");
+                return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private String getDesc(String combinedStr) {

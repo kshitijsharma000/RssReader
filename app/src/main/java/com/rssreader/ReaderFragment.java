@@ -135,9 +135,9 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
                 } else {
                     Snackbar.make(recyclerView, "Oops!! Check Internet", Snackbar.LENGTH_SHORT).show();
                 }
-                break;
+                return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
