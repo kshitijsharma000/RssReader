@@ -1,6 +1,6 @@
 package com.rssreader;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -37,7 +37,6 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
     private static final String TAG = "Reader Fragment";
     private RecyclerView recyclerView;
 
-    private ProgressDialog progressDialog;
     private NewsItemAdapter newsItemAdapter;
     private Channel mChannel;
     private String mChannelType;
@@ -45,20 +44,28 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
     private FeedReaderDBController dbController;
     private DataRetriever dataRetriever;
     private boolean updateDB;
+    private UpdateListener updateListener;
 
     public ReaderFragment() {
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setupProgressDialog();
-        //      showDialog();
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        updateListener = ((UpdateListener) activity);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         mChannelType = getArguments().getString("channeltype");
         mUrl = getArguments().getString("url");
         Log.d(TAG, "Channel type received is : " + mChannelType);
 
+        if (updateListener != null)
+            updateListener.showProgressBar();
 
         dataRetriever = new DataRetriever(this);
 
@@ -69,9 +76,12 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
             dataRetriever.makeStringRequest(mUrl);
         else
             new service().execute(mChannelType);
+    }
 
-        View view = inflater.inflate(R.layout.reader_fragment, container, false);
-        return view;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.reader_fragment, container, false);
     }
 
     @Override
@@ -98,8 +108,17 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
                 System.out.println("inside fragment on long click : " + position);
             }
         }));
+    }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        updateListener = null;
     }
 
     private void packSendItem(int pos) {
@@ -140,33 +159,6 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    private void setupProgressDialog() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle("Loading");
-        progressDialog.setMessage("Loading Data...");
-        progressDialog.setIndeterminate(true);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    }
-
-    private void showDialog() {
-        progressDialog.show();
-    }
-
-    private void hideDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.hide();
-    }
 
     @Override
     public void requestStart() {
@@ -189,7 +181,8 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         newsItemAdapter.setItemsList(mChannel.getItems());
         newsItemAdapter.notifyDataSetChanged();
 
-        hideDialog();
+        if (updateListener != null)
+            updateListener.hideProgressBar();
     }
 
     @Override
@@ -202,6 +195,12 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         public void Onclick(View view, int position);
 
         public void OnLongclick(View view, int position);
+    }
+
+    interface UpdateListener {
+        void showProgressBar();
+
+        void hideProgressBar();
     }
 
     class service extends AsyncTask<String, String, String> {
@@ -221,7 +220,8 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
             newsItemAdapter.notifyDataSetChanged();
 
             Log.d(TAG, s);
-            hideDialog();
+            if (updateListener != null)
+                updateListener.hideProgressBar();
         }
     }
 

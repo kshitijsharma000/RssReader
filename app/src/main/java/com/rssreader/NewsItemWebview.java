@@ -103,7 +103,7 @@ public class NewsItemWebview extends BaseActivity {
     private class NewsWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d(TAG, "url host : " + Uri.parse(url) + " " + Uri.parse(url).getHost());
+            Log.d(TAG, "url menu_host : " + Uri.parse(url) + " " + Uri.parse(url).getHost());
             Log.d(TAG, findKey(url));
             Log.d(TAG, findKey(mUrl));
             if (findKey(url).equals(findKey(mUrl))) {

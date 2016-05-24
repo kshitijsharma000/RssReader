@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.android.volley.VolleyError;
 import com.rssreader.Model.Channel;
@@ -26,28 +27,37 @@ import com.rssreader.utils.XmlParser;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class HostActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HostActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, ReaderFragment.UpdateListener {
 
     private static final String TAG = "HostActivity";
     private static final int MAX_THREADS = 5;
+
     ArrayList<String> mChannelTypes;
     ArrayList<String> mUrls;
+    String mChannelName;
+    ArrayList<String> mTitles;
+
     Boolean updateRequired;
 
     TabLayout tabLayout;
     ViewPager viewPager;
     DrawerLayout drawer;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //setContentView(R.layout.activity_host);
+        //Todo code for settings channel specific values;
+        setupValues(Constants.CHANNEL_NAME_JAGRAN);
+
+        startBackground();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -70,19 +80,24 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
         navigationView.setNavigationItemSelectedListener(this);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-        setupViewPager(viewPager);
+        setupViewPager(viewPager, mUrls, mChannelTypes, mTitles);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        mUrls = new ArrayList<>(Arrays.asList(Constants.JAGRAN_NATIONAL_URL, Constants.JAGRAN_WORLD_URL,
-                Constants.JAGRAN_BUSINESS_URL, Constants.JAGRAN_SPORTS_URL, Constants.JAGRAN_ODDNEWS_URL));
+        progressBar = (ProgressBar) findViewById(R.id.progressView);
+        progressBar.setIndeterminate(true);
+    }
 
-        mChannelTypes = new ArrayList<>(Arrays.asList(Constants.JAGRAN_NATIONAL, Constants.JAGRAN_WORLD,
-                Constants.JAGRAN_BUSINESS, Constants.JAGRAN_SPORTS, Constants.JAGRAN_ODDNEWS));
-
-        startBackground();
+    private void setupValues(String mChannelName) {
+        switch (mChannelName) {
+            case Constants.CHANNEL_NAME_JAGRAN:
+                mUrls = Constants.mUrlsJagran;
+                mChannelTypes = Constants.mChannelTypesJagran;
+                mTitles = Constants.mTitlesJagran;
+                break;
+        }
     }
 
     @Override
@@ -97,7 +112,7 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "home activity on options selected");
         if (item.getItemId() == R.id.menu_settings) {
-            Snackbar.make(tabLayout, "Oops!! Check Internet", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(tabLayout, "Settings not done yet. WIP", Snackbar.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -120,8 +135,8 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
-    private void setupViewPager(ViewPager viewPager) {
-        ReaderPagerAdapter pagerAdapter = new ReaderPagerAdapter(getSupportFragmentManager());
+    private void setupViewPager(ViewPager viewPager, ArrayList<String> mUrls, ArrayList<String> mChannelTypes, ArrayList<String> mTitles) {
+        ReaderPagerAdapter pagerAdapter = new ReaderPagerAdapter(getSupportFragmentManager(), mUrls, mChannelTypes, mTitles);
         viewPager.setAdapter(pagerAdapter);
     }
 
@@ -154,6 +169,16 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 
     private class Worker implements Runnable, DataRetriever.DataListener {

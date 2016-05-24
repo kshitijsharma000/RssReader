@@ -3,15 +3,14 @@ package com.rssreader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Kshitij on 5/13/2016.
  */
-public class ReaderPagerAdapter extends FragmentStatePagerAdapter {
+public class ReaderPagerAdapter extends FragmentPagerAdapter {
 
     private static final int NUM = 10;
     private ArrayList<String> mTitles;
@@ -19,17 +18,13 @@ public class ReaderPagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<String> mChannelTypes;
 
 
-    public ReaderPagerAdapter(FragmentManager fm) {
+    public ReaderPagerAdapter(FragmentManager fm, ArrayList<String> mUrls, ArrayList<String> mChannelTypes, ArrayList<String> mTitles) {
         super(fm);
-        mUrls = new ArrayList<>(Arrays.asList(Constants.JAGRAN_NATIONAL_URL, Constants.JAGRAN_WORLD_URL,
-                Constants.JAGRAN_BUSINESS_URL, Constants.JAGRAN_SPORTS_URL, Constants.JAGRAN_ODDNEWS_URL));
-
-        mChannelTypes = new ArrayList<>(Arrays.asList(Constants.JAGRAN_NATIONAL, Constants.JAGRAN_WORLD,
-                Constants.JAGRAN_BUSINESS, Constants.JAGRAN_SPORTS, Constants.JAGRAN_ODDNEWS));
-
-        mTitles = new ArrayList<>(Arrays.asList("राष्ट्रीय", "दुनिया", "बिजनेस", "खेल", "जरा हटके"));
+        this.mUrls = mUrls;
+        this.mChannelTypes = mChannelTypes;
+        this.mTitles = mTitles;
     }
-
+    
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = new ReaderFragment();
