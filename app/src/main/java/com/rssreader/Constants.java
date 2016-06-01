@@ -19,6 +19,7 @@ public final class Constants {
     public static final String IsPermanLink = "isPermaLink";
 
     public static final String CHANNEL_NAME_JAGRAN = "jagran";
+    public static final String CHANNEL_JAGRAN_TITLE = "जागरण दैनिक";
 
     public static final String JAGRAN_NATIONAL_URL = "http://rss.jagran.com/rss/news/national.xml";
     public static final String JAGRAN_WORLD_URL = "http://rss.jagran.com/rss/news/world.xml";
@@ -41,7 +42,19 @@ public final class Constants {
     public static final ArrayList<String> mTitlesJagran = new ArrayList<>(Arrays.asList("राष्ट्रीय", "दुनिया", "बिजनेस", "खेल", "जरा हटके"));
 
 
+    public static final String CHANNEL_NAME_JAGRANJOSH = "jagranjosh";
+    public static final String CHANNEL_JAGRANJOSH_TITLE = "जागरण जोश";
+
     public static final String JAGRAN_JOSH_ARTICLE_URL = "http://www.jagranjosh.com/rss/josh/article_hindi.xml";
     public static final String JAGRAN_JOSH_CURRENTAFFAIRS_URL = "http://www.jagranjosh.com/rss/josh/current_affairs_hindi.xml";
+
+    public static final String JAGRANJOSH_ARTICLE = "joshArticles";
+    public static final String JAGRANJOSH_CURRENT = "joshCurrent";
+
+    public static final ArrayList<String> mUrlsJagranJosh = new ArrayList<>(Arrays.asList(Constants.JAGRAN_JOSH_ARTICLE_URL, Constants.JAGRAN_JOSH_CURRENTAFFAIRS_URL));
+
+    public static final ArrayList<String> mChannelTypesJagranJosh = new ArrayList<>(Arrays.asList(Constants.JAGRANJOSH_ARTICLE, Constants.JAGRANJOSH_CURRENT));
+
+    public static final ArrayList<String> mTitlesJagranJosh = new ArrayList<>(Arrays.asList("आर्टिकल्स","करंट अफेयर्स"));
 
 }

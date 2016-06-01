@@ -4,6 +4,7 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.rssreader.Constants;
+import com.rssreader.HostActivity;
 import com.rssreader.Model.Channel;
 import com.rssreader.Model.Channel.Image;
 import com.rssreader.Model.Channel.Item.Guid;
@@ -44,6 +45,11 @@ public class XmlParser {
             parser.next();
             Log.d(TAG, parser.getEventType() + " " + parser.getName());
             parser.next();
+
+            //parser modification required only for Jagran josh
+            if(HostActivity.mCurrentTab == Constants.CHANNEL_NAME_JAGRANJOSH)
+                parser.next();
+
             Log.d(TAG, parser.getEventType() + " " + parser.getName());
             return readFeed(parser);
         } catch (XmlPullParserException e) {

@@ -3,16 +3,18 @@ package com.rssreader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 /**
  * Created by Kshitij on 5/13/2016.
  */
-public class ReaderPagerAdapter extends FragmentPagerAdapter {
+public class ReaderPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int NUM = 10;
+    private static final String TAG = "pagerAdapter";
     private ArrayList<String> mTitles;
     private ArrayList<String> mUrls;
     private ArrayList<String> mChannelTypes;
@@ -24,9 +26,22 @@ public class ReaderPagerAdapter extends FragmentPagerAdapter {
         this.mChannelTypes = mChannelTypes;
         this.mTitles = mTitles;
     }
-    
+
+    public void setItems(ArrayList<String> mUrls, ArrayList<String> mChannelTypes, ArrayList<String> mTitles) {
+        this.mUrls = mUrls;
+        this.mChannelTypes = mChannelTypes;
+        this.mTitles = mTitles;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        Log.d(TAG, "inside get item position");
+        return POSITION_NONE;
+    }
+
     @Override
     public Fragment getItem(int position) {
+        Log.d(TAG, "inside get fragment " + position);
         Fragment fragment = new ReaderFragment();
         Bundle args = new Bundle();
         args.putString("url", mUrls.get(position));
@@ -42,6 +57,7 @@ public class ReaderPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
+        Log.d(TAG, "inside get positions " + position);
         return mTitles.get(position);
     }
 }

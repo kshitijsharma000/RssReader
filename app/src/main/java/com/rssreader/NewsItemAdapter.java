@@ -41,13 +41,15 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.ViewHo
 
         String url = getImageUrl(item.getDescription());
 
-
         //"17 May 2016 08:26:31 GMT"
         Date date = null;
         DateFormat formatIn = new SimpleDateFormat("dd MMMM yyyy hh:mm:ss z");
         DateFormat formatOut = new SimpleDateFormat("dd MMMM : hh:mm");
         try {
-            date = formatIn.parse(item.getPubDate());
+            String temp = item.getPubDate();
+            if(temp.contains(","))
+                temp = item.getPubDate().split(",")[1];
+            date = formatIn.parse(temp);
         } catch (ParseException e) {
             e.printStackTrace();
         }

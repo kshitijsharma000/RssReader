@@ -36,25 +36,32 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
     private static final String TAG = "HostActivity";
     private static final int MAX_THREADS = 5;
 
-    ArrayList<String> mChannelTypes;
-    ArrayList<String> mUrls;
-    String mChannelName;
-    ArrayList<String> mTitles;
+    private ArrayList<String> mChannelTypes;
+    private ArrayList<String> mUrls;
+    private ArrayList<String> mTitles;
+    public static String mCurrentTab;
 
-    Boolean updateRequired;
+    private Boolean updateRequired;
 
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    DrawerLayout drawer;
-    ProgressBar progressBar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private DrawerLayout drawer;
+    private ProgressBar progressBar;
+    private ReaderPagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //setContentView(R.layout.activity_host);
-        //Todo code for settings channel specific values;
-        setupValues(Constants.CHANNEL_NAME_JAGRAN);
+        //Default channel jagran feeds
+        {
+            mUrls = Constants.mUrlsJagranJosh;
+            mChannelTypes = Constants.mChannelTypesJagranJosh;
+            mTitles = Constants.mTitlesJagranJosh;
+
+            mCurrentTab = Constants.CHANNEL_NAME_JAGRANJOSH;
+        }
 
         startBackground();
 
@@ -90,16 +97,6 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
         progressBar.setIndeterminate(true);
     }
 
-    private void setupValues(String mChannelName) {
-        switch (mChannelName) {
-            case Constants.CHANNEL_NAME_JAGRAN:
-                mUrls = Constants.mUrlsJagran;
-                mChannelTypes = Constants.mChannelTypesJagran;
-                mTitles = Constants.mTitlesJagran;
-                break;
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d("Homeactivity", "on create options menu");
@@ -124,7 +121,31 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_share) {
+        if (id == R.id.nav_jagranHindi) {
+            if (mCurrentTab != Constants.CHANNEL_NAME_JAGRAN) {
+                mUrls = Constants.mUrlsJagran;
+                mChannelTypes = Constants.mChannelTypesJagran;
+                mTitles = Constants.mTitlesJagran;
+
+                mCurrentTab = Constants.CHANNEL_NAME_JAGRAN;
+
+                pagerAdapter.setItems(mUrls, mChannelTypes, mTitles);
+                Log.d(TAG, "Selected jagran hindi tab");
+                pagerAdapter.notifyDataSetChanged();
+            }
+        } else if (id == R.id.nav_jagranJosh) {
+            if (mCurrentTab != Constants.CHANNEL_NAME_JAGRANJOSH) {
+                mUrls = Constants.mUrlsJagranJosh;
+                mChannelTypes = Constants.mChannelTypesJagranJosh;
+                mTitles = Constants.mTitlesJagranJosh;
+
+                mCurrentTab = Constants.CHANNEL_NAME_JAGRANJOSH;
+
+                pagerAdapter.setItems(mUrls, mChannelTypes, mTitles);
+                Log.d(TAG, "Selected jagran josh tab");
+                pagerAdapter.notifyDataSetChanged();
+            }
+        } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
@@ -136,7 +157,7 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
 
 
     private void setupViewPager(ViewPager viewPager, ArrayList<String> mUrls, ArrayList<String> mChannelTypes, ArrayList<String> mTitles) {
-        ReaderPagerAdapter pagerAdapter = new ReaderPagerAdapter(getSupportFragmentManager(), mUrls, mChannelTypes, mTitles);
+        pagerAdapter = new ReaderPagerAdapter(getSupportFragmentManager(), mUrls, mChannelTypes, mTitles);
         viewPager.setAdapter(pagerAdapter);
     }
 
