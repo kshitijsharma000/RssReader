@@ -9,6 +9,7 @@ import com.rssreader.Model.Channel;
 import com.rssreader.Model.Channel.Image;
 import com.rssreader.Model.Channel.Item.Guid;
 
+import org.xml.sax.InputSource;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -36,7 +37,7 @@ public class XmlParser {
     }
 
     public synchronized Channel parse(String xml) {
-        Log.d(TAG, "parse called");
+        Log.d(TAG, "parse called : ");
         try {
             parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -47,7 +48,7 @@ public class XmlParser {
             parser.next();
 
             //parser modification required only for Jagran josh
-            if(HostActivity.mCurrentTab == Constants.CHANNEL_NAME_JAGRANJOSH)
+            if (HostActivity.mCurrentTab == Constants.CHANNEL_NAME_JAGRANJOSH)
                 parser.next();
 
             Log.d(TAG, parser.getEventType() + " " + parser.getName());

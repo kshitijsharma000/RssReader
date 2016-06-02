@@ -2,15 +2,18 @@ package com.rssreader;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.rssreader.netutils.Appcontroller;
 import com.rssreader.Model.Channel;
+import com.rssreader.netutils.Appcontroller;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +50,7 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.ViewHo
         DateFormat formatOut = new SimpleDateFormat("dd MMMM : hh:mm");
         try {
             String temp = item.getPubDate();
-            if(temp.contains(","))
+            if (temp.contains(","))
                 temp = item.getPubDate().split(",")[1];
             date = formatIn.parse(temp);
         } catch (ParseException e) {
@@ -58,15 +61,17 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.ViewHo
             holder.mItemImage.setImageResource(R.mipmap.jagran_icon);
         else
             holder.mItemImage.setImageUrl(url, Appcontroller.getmInstance().getImageLoader());
+
         holder.mItemTitle.setText(item.getTitle());
         holder.mItemDate.setText(formatOut.format(date));
     }
 
-    private String getImageUrl(String combinedStr) {
-        if (combinedStr.indexOf('<') == -1 || combinedStr.indexOf('>') == -1)
+    private String getImageUrl(String str) {
+        if ((str.indexOf('<') == -1 || str.indexOf('>') == -1)
+                || (str.substring(str.indexOf('<') + 1, str.indexOf('>')).length() < 2))
             return null;
         else
-            return combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>')).split("=")[1];
+            return str.substring(str.indexOf('<') + 1, str.indexOf('>')).split("=")[1];
     }
 
     public void setItemsList(ArrayList<Channel.Item> itemsList) {
