@@ -36,9 +36,12 @@ public class DataRetriever {
     }
 
     public synchronized void makeStringRequest(String url) {
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+        MyRequest mrequest = new MyRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                System.out.println("Data Retriever kshitij: " + response);
+
                 listener.dataRecieved(response);
             }
         }, new Response.ErrorListener() {
@@ -49,7 +52,7 @@ public class DataRetriever {
         });
 
         listener.requestStart();
-        Appcontroller.getmInstance().addtoRequestqueue(request);
+        Appcontroller.getmInstance().addtoRequestqueue(mrequest);
     }
 
     public interface DataListener {

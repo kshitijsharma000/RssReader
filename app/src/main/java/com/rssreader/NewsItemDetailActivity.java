@@ -2,12 +2,12 @@ package com.rssreader;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
@@ -59,13 +59,27 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
 
         intent = getIntent();
         mNewsItemTitle.setText(intent.getStringExtra("title"));
-        mNewsItemDesc.setText(getDesc(intent.getStringExtra("desc")));
+        String mDesc = getDesc(intent.getStringExtra("desc"));
 
-        String url = getImageUrl(intent.getStringExtra("desc"));
-        if (url == null)
-            mNewsItemImage.setImageResource(R.mipmap.jagran_icon);
-        else
-            mNewsItemImage.setImageUrl(url, Appcontroller.getmInstance().getImageLoader());
+        mNewsItemDesc.setText(Html.fromHtml(mDesc));
+
+        if (HostActivity.SUPPORTS_IMAGE) {
+            String url = getImageUrl(intent.getStringExtra("desc"));
+            if (url == null)
+                mNewsItemImage.setImageResource(R.mipmap.jagran_icon);
+            else
+                mNewsItemImage.setImageUrl(url, Appcontroller.getmInstance().getImageLoader());
+        } else {
+            switch (HostActivity.mCurrentTab) {
+                case Constants.CHANNEL_NAME_JAGRAN:
+                    mNewsItemImage.setImageResource(R.mipmap.jagran_icon);
+                    break;
+                case Constants.CHANNEL_NAME_JAGRANJOSH:
+                    mNewsItemImage.setImageResource(R.mipmap.jagranjosh);
+            }
+        }
+
+
     }
 
     @Override
@@ -74,11 +88,12 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
     }
 
     private String getImageUrl(String combinedStr) {
-        if (combinedStr.indexOf('<') == -1 || combinedStr.indexOf('>') == -1)
+        //   Log.d(TAG, combinedStr);
+        if ((combinedStr.indexOf('<') == -1 || combinedStr.indexOf('>') == -1)
+                || combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>')).length() < 2)
             return null;
         else
-            return combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>'))
-                    .split("=")[1].replace("_s", "");
+            return combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>')).split("=")[1];
     }
 
     @Override
@@ -93,14 +108,17 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
     }
 
     private String getDesc(String combinedStr) {
-        int index = combinedStr.indexOf(">");
-        if (combinedStr.length() > 1) {
-            if (index == -1)
-                return combinedStr;
-            else
-                return combinedStr.substring(combinedStr.indexOf('>') + 1, combinedStr.length());
-        } else
-            return "";
+        if (HostActivity.mCurrentTab == Constants.CHANNEL_NAME_JAGRAN) {
+            int index = combinedStr.indexOf(">");
+            if (combinedStr.length() > 1) {
+                if (index == -1)
+                    return combinedStr;
+                else
+                    return combinedStr.substring(combinedStr.indexOf('>') + 1, combinedStr.length());
+            } else
+                return "";
+        }
+        return combinedStr;
     }
 
     private void setNavigationAnim() {

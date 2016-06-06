@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public class ReaderPagerAdapter extends FragmentStatePagerAdapter {
 
-    private static final int NUM = 10;
     private static final String TAG = "pagerAdapter";
     private ArrayList<String> mTitles;
     private ArrayList<String> mUrls;
@@ -52,12 +51,13 @@ public class ReaderPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
+       // Log.d(TAG, "get count : " + mUrls.size());
         return mUrls.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        Log.d(TAG, "inside get positions " + position);
+        Log.d(TAG, "inside get title " + mTitles.get(position));
         return mTitles.get(position);
     }
 }

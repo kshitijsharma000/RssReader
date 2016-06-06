@@ -8,4 +8,171 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- 1st channel Jagran Dainik -->
+    <string name="channel_name_jagran">jagran</string>
+    <string name="channel_jagran_title">जागरण दैनिक</string>
+
+    <string name="jagran_national_url">http://rss.jagran.com/rss/news/national.xml</string>
+    <string name="jagran_world_url">http://rss.jagran.com/rss/news/world.xml</string>
+    <string name="jagran_business_url">http://rss.jagran.com/rss/news/business.xml</string>
+    <string name="jagran_sports_url">http://rss.jagran.com/rss/news/sports.xml</string>
+    <string name="jagran_oddnews_url">http://rss.jagran.com/rss/news/oddnews.xml</string>
+    <string name="jagran_national">jagranNational</string>
+    <string name="jagran_world">jagranWorld</string>
+    <string name="jagran_business">jagranBusiness</string>
+    <string name="jagran_sports">jagranSports</string>
+    <string name="jagran_oddnews">jagranOdd</string>
+
+    <string-array name="mUrlsJagran">
+        <item>@string/jagran_national_url</item>
+        <item>@string/jagran_world_url</item>
+        <item>@string/jagran_business_url</item>
+        <item>@string/jagran_sports_url</item>
+        <item>@string/jagran_oddnews_url</item>
+    </string-array>
+
+    <string-array name="mChannelTypeJagran">
+        <item>@string/jagran_national</item>
+        <item>@string/jagran_world</item>
+        <item>@string/jagran_business</item>
+        <item>@string/jagran_sports</item>
+        <item>@string/jagran_oddnews</item>
+    </string-array>
+
+    <string-array name="mTitlesJagran">
+        <item>राष्ट्रीय</item>
+        <item>दुनिया</item>
+        <item>बिजनेस</item>
+        <item>खेल</item>
+        <item>जरा हटके</item>
+    </string-array>
+
+    <!-- 2nd channel Jagran Josh -->
+    <string name="channel_name_jagranjosh">jagranjosh</string>
+    <string name="channel_jagranjosh_title">जागरण जोश</string>
+
+    <string name="jagranjosh_article_url">http://www.jagranjosh.com/rss/josh/article_hindi.xml</string>
+    <string name="jagranjosh_currentaffairs_url">http://www.jagranjosh.com/rss/josh/current_affairs_hindi.xml</string>
+
+    <string name="jagranjosh_article">joshArticles</string>
+    <string name="jagranjosh_current">joshCurrent</string>
+
+    <string-array name="mUrlsJagranJosh">
+        <item>@string/jagranjosh_article_url</item>
+        <item>@string/jagranjosh_currentaffairs_url</item>
+    </string-array>
+
+    <string-array name="mChannelTypeJagranJosh">
+        <item>@string/jagranjosh_article</item>
+        <item>@string/jagranjosh_current</item>
+    </string-array>
+
+    <string-array name="mTitlesJagranJosh">
+        <item>आर्टिकल्स</item>
+        <item>करंट अफेयर्स</item>
+    </string-array>
+
+    <!-- 3rd channel Bhaskar Dianik-->
+    <string name="channel_name_dainikbhaskar">dainikbhaskar</string>
+    <string name="channel_dainikbhaskar_title">दैनिक भास्कर</string>
+
+    <string name="dainikbhaskar_topnews_url">http://www.bhaskar.com/rss-feed/521/</string>
+    <string name="dainikbhaskar_international_url">http://www.bhaskar.com/rss-feed/2338/</string>
+    <string name="dainikbhaskar_nationalnews_url">http://www.bhaskar.com/rss-feed/2322/</string>
+    <string name="dainikbhaskar_bhaskarspecial_url">http://www.bhaskar.com/rss-feed/4587/</string>
+    <string name="dainikbhaskar_editorial_url">Editorial http://www.bhaskar.com/rss-feed/2089/</string>
+    <string name="dainikbhaskar_magazine_url">Magazine http://www.bhaskar.com/rss-feed/1057/</string>
+    <string name="dainikbhaskar_entertainment_url">http://www.bhaskar.com/rss-feed/3998/</string>
+    <string name="dainikbhaskar_gadgets_url">http://www.bhaskar.com/rss-feed/5707/</string>
+    <string name="dainikbhaskar_humor_url">http://www.bhaskar.com/rss-feed/4867/</string>
+
+    <string name="dainikbhaskar_reg_BHOPAL_url">http://www.bhaskar.com/rss-feed/1700/</string>
+    <string name="dainikbhaskar_reg_INDORE_url">http://www.bhaskar.com/rss-feed/1701/</string>
+    <string name="dainikbhaskar_reg_JAIPUR_url">http://www.bhaskar.com/rss-feed/1709/</string>
+    <string name="dainikbhaskar_reg_JODHPUR_url">http://www.bhaskar.com/rss-feed/1710/</string>
+    <string name="dainikbhaskar_reg_UDAIPUR_url">http://www.bhaskar.com/rss-feed/1711/</string>
+    <string name="dainikbhaskar_reg_RAIPUR_url">http://www.bhaskar.com/rss-feed/1719/</string>
+    <string name="dainikbhaskar_reg_LUDHIANA_url">http://www.bhaskar.com/rss-feed/1728/</string>
+    <string name="dainikbhaskar_reg_CHANDIGARH_url">http://www.bhaskar.com/rss-feed/1738/</string>
+    <string name="dainikbhaskar_reg_MP_url">http://www.bhaskar.com/rss-feed/1739/</string>
+    <string name="dainikbhaskar_reg_RAJASTHAN_url">http://www.bhaskar.com/rss-feed/1740/</string>
+    <string name="dainikbhaskar_reg_CHATTISGARH_url">http://www.bhaskar.com/rss-feed/1741/</string>
+    <string name="dainikbhaskar_reg_HARAYANA_url">http://www.bhaskar.com/rss-feed/1742/</string>
+    <string name="dainikbhaskar_reg_PUNJAB_url">http://www.bhaskar.com/rss-feed/1743/</string>
+    <string name="dainikbhaskar_reg_HP_url">http://www.bhaskar.com/rss-feed/1744/</string>
+    <string name="dainikbhaskar_reg_DELHI_url">http://www.bhaskar.com/rss-feed/1756/</string>
+    <string name="dainikbhaskar_reg_GUJARAT_url">http://www.bhaskar.com/rss-feed/2313/</string>
+    <string name="dainikbhaskar_reg_MAHARASHTRA_url">http://www.bhaskar.com/rss-feed/2318/</string>
+    <string name="dainikbhaskar_reg_JHARKHAND_url">http://www.bhaskar.com/rss-feed/3682/</string>
+    <string name="dainikbhaskar_reg_BIHAR_url">http://www.bhaskar.com/rss-feed/3679/</string>
+    <string name="dainikbhaskar_reg_RANCHI_url">http://www.bhaskar.com/rss-feed/4845/</string>
+
+
+    <string name="dainikbhaskar_topnews">bhaskarTopnews</string>
+    <string name="dainikbhaskar_international">bhaskarInternational</string>
+    <string name="dainikbhaskar_national">bhaskarNational</string>
+    <string name="dainikbhaskar_bhaskarspecial">bhaskarSpecial</string>
+    <string name="dainikbhaskar_editorial">bhaskarEditorial</string>
+    <string name="dainikbhaskar_magazine">bhaskarMagazine</string>
+    <string name="dainikbhaskar_entertainment">bhaskarEntertainment</string>
+    <string name="dainikbhaskar_gadets">bhaskarGadgets</string>
+    <string name="dainikbhaskar_humor">bhaskarHumor</string>
+
+    <string name="dainikbhaskar_BHOPAL">dainikBhaskarBhopal</string>
+    <string name="dainikbhaskar_INDORE">dainikBhaskarIndore</string>
+    <string name="dainikbhaskar_JAIPUR">dainikBhaskarJaipur</string>
+    <string name="dainikbhaskar_JODHPUR">dainikBhaskarJodhpur</string>
+    <string name="dainikbhaskar_UDAIPUR">dainikBhaskarUdaipur</string>
+    <string name="dainikbhaskar_RAIPUR">dainikBhaskarRaipur</string>
+    <string name="dainikbhaskar_LUDHIANA">dainikBhaskarLudhiana</string>
+    <string name="dainikbhaskar_CHANDIGARH">dainikBhaskarChandigarh</string>
+    <string name="dainikbhaskar_MP">dainikBhaskarMP</string>
+    <string name="dainikbhaskar_RAJASTHAN">dainikBhaskarRajasthan</string>
+    <string name="dainikbhaskar_CHATTISGARH">dainikBhaskarChattisgarh</string>
+    <string name="dainikbhaskar_HARAYANA">dainikBhaskarHarayana</string>
+    <string name="dainikbhaskar_PUNJAB">dainikBhaskarPunjab</string>
+    <string name="dainikbhaskar_HP">dainikBhaskarHP</string>
+    <string name="dainikbhaskar_DELHI">dainikBhaskarDelhi</string>
+    <string name="dainikbhaskar_GUJARAT">dainikBhaskarGujarat</string>
+    <string name="dainikbhaskar_MAHARASHTRA">dainikBhaskarMaharashtra</string>
+    <string name="dainikbhaskar_JHARKHAND">dainikBhaskarJharkhand</string>
+    <string name="dainikbhaskar_BIHAR">dainikBhaskarBihar</string>
+    <string name="dainikbhaskar_RANCHI">dainikBhaskarRanchi</string>
+
+    <string-array name="mUrlsBhaskarDainik">
+        <item>@string/dainikbhaskar_topnews_url</item>
+        <item>@string/dainikbhaskar_international_url</item>
+        <item>@string/dainikbhaskar_nationalnews_url</item>
+        <item>@string/dainikbhaskar_bhaskarspecial_url</item>
+        <item>@string/dainikbhaskar_editorial_url</item>
+        <item>@string/dainikbhaskar_magazine_url</item>
+        <item>@string/dainikbhaskar_entertainment_url</item>
+        <item>@string/dainikbhaskar_gadgets_url</item>
+        <item>@string/dainikbhaskar_humor_url</item>
+    </string-array>
+
+    <string-array name="mChannelTypeBhaskarDainik">
+        <item>@string/dainikbhaskar_topnews</item>
+        <item>@string/dainikbhaskar_international</item>
+        <item>@string/dainikbhaskar_national</item>
+        <item>@string/dainikbhaskar_bhaskarspecial</item>
+        <item>@string/dainikbhaskar_editorial</item>
+        <item>@string/dainikbhaskar_magazine</item>
+        <item>@string/dainikbhaskar_entertainment</item>
+        <item>@string/dainikbhaskar_gadets</item>
+        <item>@string/dainikbhaskar_humor</item>
+    </string-array>
+
+    <string-array name="mTitlesBhaskarDainik">
+        <item>मुख्य समाचार</item>
+        <item>अंतरराष्ट्रीय</item>
+        <item>राष्ट्रीय</item>
+        <item>भास्कर विशेष</item>
+        <item>संपादकीय</item>
+        <item>पत्रिका</item>
+        <item>मनोरंजन</item>
+        <item>गैजेट</item>
+        <item>मनोवृत्ति</item>
+    </string-array>
+
 </resources>

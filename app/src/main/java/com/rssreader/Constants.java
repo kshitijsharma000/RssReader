@@ -57,4 +57,6 @@ public final class Constants {
 
     public static final ArrayList<String> mTitlesJagranJosh = new ArrayList<>(Arrays.asList("आर्टिकल्स","करंट अफेयर्स"));
 
+
+
 }

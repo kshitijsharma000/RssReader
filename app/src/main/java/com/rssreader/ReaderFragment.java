@@ -172,7 +172,6 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
 
     @Override
     public void dataRecieved(String stringObject) {
-
         mChannel = XmlParser.getParser().parse(stringObject);
 
         if (updateDB) {

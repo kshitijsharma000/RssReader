@@ -9,7 +9,6 @@ import com.rssreader.Model.Channel;
 import com.rssreader.Model.Channel.Image;
 import com.rssreader.Model.Channel.Item.Guid;
 
-import org.xml.sax.InputSource;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -134,7 +133,7 @@ public class XmlParser {
         String tag = parser.getName();
         Guid guid = null;
         if (tag.equals(Constants.Guid)) {
-            //Readgin Guid attributes..
+            //Reading Guid attributes..
             guid = mItem.new Guid();
             guid.setAttrisPermaLink(parser.getAttributeValue(null, Constants.IsPermanLink));
             guid.setVal(readText(parser));
