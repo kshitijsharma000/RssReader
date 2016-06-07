@@ -33,11 +33,12 @@
 
             <TextView
                 android:id="@+id/newsItemDetailTitle"
+                style="@style/Base.TextAppearance.AppCompat.Headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:padding="5dp"
-                android:text="Dummy..\n\n"
-                android:textSize="25dp" />
+                android:text="Dummy..\n\n" />
 
             <View
                 android:id="@+id/horizontalDividerOne"
@@ -72,22 +73,33 @@
                 android:paddingLeft="40dp"
                 android:paddingRight="40dp" />
 
-            <TextView
-                android:id="@+id/newsItemDetailDescription"
+            <ScrollView
+                android:id="@+id/newsItemDetailDescriptionHolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/horizontalDividerTwo"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:text="Desc..\n\n\n\n\n"
-                android:textColor="@android:color/black"
-                android:textSize="15dp" />
+                android:scrollbarFadeDuration="1000"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbars="vertical">
+
+                <TextView
+                    android:id="@+id/newsItemDetailDescription"
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.5"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:scrollbars="vertical"
+                    android:text="Desc..\n\n\n\n\n"
+                    android:textColor="@android:color/black" />
+            </ScrollView>
 
             <TextView
                 android:id="@+id/newsItemDetailClickMore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/newsItemDetailDescription"
+                android:layout_below="@id/newsItemDetailDescriptionHolder"
                 android:layout_marginTop="20dp"
                 android:clickable="true"
                 android:gravity="center"
@@ -96,7 +108,7 @@
                 android:paddingRight="20dp"
                 android:text="Click here for more >>"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
         </RelativeLayout>
 
@@ -109,8 +121,8 @@
                 android:id="@+id/newsItemDetailRightNav"
                 android:layout_width="30dp"
                 android:layout_height="150dp"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center|right"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center|end"
                 android:alpha="0.75"
                 android:clickable="true"
                 android:scaleType="center"
@@ -120,7 +132,7 @@
                 android:id="@+id/newsItemDetailLeftNav"
                 android:layout_width="30dp"
                 android:layout_height="150dp"
-                android:layout_gravity="center|left"
+                android:layout_gravity="center|start"
                 android:alpha="0.75"
                 android:clickable="true"
                 android:scaleType="center"

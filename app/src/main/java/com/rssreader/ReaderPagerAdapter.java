@@ -34,13 +34,13 @@ public class ReaderPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        Log.d(TAG, "inside get item position");
+        Logger.print(TAG, "inside get item position");
         return POSITION_NONE;
     }
 
     @Override
     public Fragment getItem(int position) {
-        Log.d(TAG, "inside get fragment " + position);
+        Logger.print(TAG, "inside get fragment " + position);
         Fragment fragment = new ReaderFragment();
         Bundle args = new Bundle();
         args.putString("url", mUrls.get(position));
@@ -51,13 +51,13 @@ public class ReaderPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-       // Log.d(TAG, "get count : " + mUrls.size());
+       // Logger.print(TAG, "get count : " + mUrls.size());
         return mUrls.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        Log.d(TAG, "inside get title " + mTitles.get(position));
+        Logger.print(TAG, "inside get title " + mTitles.get(position));
         return mTitles.get(position);
     }
 }

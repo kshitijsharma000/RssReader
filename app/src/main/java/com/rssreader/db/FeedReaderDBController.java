@@ -5,10 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.rssreader.Logger;
 import com.rssreader.Model.Channel;
 
 import java.util.ArrayList;
@@ -71,11 +71,11 @@ public class FeedReaderDBController {
 
         if (ifExisted <= 0) {
             newRowId = db.insert(FeedReaderContract.FeedReaderEntry.TABLE_NAME, null, values);
-            Log.d(TAG, "written new row to DB : " + newRowId);
+            Logger.print(TAG, "written new row to DB : " + newRowId);
             db.close();
             return newRowId;
         } else {
-            Log.d(TAG, "Record updated : " + ifExisted);
+            Logger.print(TAG, "Record updated : " + ifExisted);
         }
         db.close();
         return ifExisted;
@@ -90,7 +90,7 @@ public class FeedReaderDBController {
                 + " where " + FeedReaderContract.FeedReaderEntry.COL_TITLE
                 + "=" + "\"" + mChannelType + "\"" + ";", null);
 
-        Log.d(TAG, "Cursor returned : " + cursor.getCount() + " values");
+        Logger.print(TAG, "Cursor returned : " + cursor.getCount() + " values");
         if (cursor.getCount() == 0)
             return null;
 
@@ -116,7 +116,7 @@ public class FeedReaderDBController {
         ArrayList<Channel.Item> items = gson.fromJson(mItemsStr, new TypeToken<ArrayList<Channel.Item>>() {
         }.getType());
 
-        Log.d(TAG, "Items found in DB : " + items.size());
+        Logger.print(TAG, "Items found in DB : " + items.size());
 
         mChannel.setItems(items);
 

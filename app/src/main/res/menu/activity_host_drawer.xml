@@ -4,10 +4,13 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_jagranHindi"
-            android:title="जागरण दैनिक" />
+            android:title="दैनिक जागरण" />
         <item
             android:id="@+id/nav_jagranJosh"
             android:title="जागरण जोश" />
+        <item
+            android:id="@+id/nav_dainikBhaskar"
+            android:title="दैनिक भास्कर" />
 
     </group>
 

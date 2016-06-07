@@ -5,13 +5,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
+import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import com.rssreader.utils.BaseActivity;
 
@@ -21,7 +20,7 @@ public class NewsItemWebview extends BaseActivity {
     WebView webView;
     private String mUrl;
     private ProgressDialog dialog;
-    private Switch navSwitch;
+    private SwitchCompat navSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,7 @@ public class NewsItemWebview extends BaseActivity {
         mUrl = getIntent().getStringExtra("link");
         webView.loadUrl(mUrl);
 
-        navSwitch = (Switch) findViewById(R.id.nav_switch);
+        navSwitch = (SwitchCompat) findViewById(R.id.nav_switch);
         navSwitch.setTextOn("On");
         navSwitch.setTextOff("Off");
 
@@ -94,7 +93,7 @@ public class NewsItemWebview extends BaseActivity {
                 finish();
                 return true;
             case R.id.webViewNavigationSwitch:
-                Log.d(TAG, "web navigation clicked");
+                Logger.print(TAG, "web navigation clicked");
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -103,13 +102,10 @@ public class NewsItemWebview extends BaseActivity {
     private class NewsWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d(TAG, "url menu_host : " + Uri.parse(url) + " " + Uri.parse(url).getHost());
-            Log.d(TAG, findKey(url));
-            Log.d(TAG, findKey(mUrl));
-            if (findKey(url).equals(findKey(mUrl))) {
-                return false;
-            }
-            return true;
+            Logger.print(TAG, "url menu_host : " + Uri.parse(url) + " " + Uri.parse(url).getHost());
+            Logger.print(TAG, findKey(url));
+            Logger.print(TAG, findKey(mUrl));
+            return !findKey(url).equals(findKey(mUrl));
         }
 
         @Override

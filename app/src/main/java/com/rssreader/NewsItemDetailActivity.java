@@ -3,7 +3,6 @@ package com.rssreader;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +26,7 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
     FrameLayout contentFrameLayout;
     TextView mNewsItemTitle;
     TextView mNewsItemDesc;
+    View mDividerView;
     NetworkImageView mNewsItemImage;
     TextView mLinkMore;
     Intent intent;
@@ -56,6 +56,7 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
         mNewsItemTitle = (TextView) findViewById(R.id.newsItemDetailTitle);
         mNewsItemDesc = (TextView) findViewById(R.id.newsItemDetailDescription);
         mNewsItemImage = (NetworkImageView) findViewById(R.id.newsItemDetailThumbnail);
+        mDividerView = findViewById(R.id.horizontalDividerTwo);
 
         intent = getIntent();
         mNewsItemTitle.setText(intent.getStringExtra("title"));
@@ -70,16 +71,15 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
             else
                 mNewsItemImage.setImageUrl(url, Appcontroller.getmInstance().getImageLoader());
         } else {
-            switch (HostActivity.mCurrentTab) {
+            /*switch (HostActivity.mCurrentTab) {
                 case Constants.CHANNEL_NAME_JAGRAN:
                     mNewsItemImage.setImageResource(R.mipmap.jagran_icon);
                     break;
                 case Constants.CHANNEL_NAME_JAGRANJOSH:
-                    mNewsItemImage.setImageResource(R.mipmap.jagranjosh);
-            }
+                    mNewsItemImage.setImageResource(R.mipmap.jagranjosh);*/
+            mNewsItemImage.setVisibility(View.GONE);
+            mDividerView.setVisibility(View.GONE);
         }
-
-
     }
 
     @Override
@@ -88,7 +88,7 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
     }
 
     private String getImageUrl(String combinedStr) {
-        //   Log.d(TAG, combinedStr);
+        //   Logger.print(TAG, combinedStr);
         if ((combinedStr.indexOf('<') == -1 || combinedStr.indexOf('>') == -1)
                 || combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>')).length() < 2)
             return null;
@@ -98,10 +98,10 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, " detail option item selected");
+        Logger.print(TAG, " detail option item selected");
         switch (item.getItemId()) {
             case R.id.menu_share:
-                Log.d(TAG, "sharing button pressed");
+                Logger.print(TAG, "sharing button pressed");
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -147,10 +147,10 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.newsItemDetailRightNav:
-                Log.d(TAG, "clicked right nav key");
+                Logger.print(TAG, "clicked right nav key");
                 break;
             case R.id.newsItemDetailLeftNav:
-                Log.d(TAG, "Clicked left Nav key");
+                Logger.print(TAG, "Clicked left Nav key");
                 break;
             case R.id.newsItemDetailContentFrame:
                 rightNav.setVisibility(View.VISIBLE);
@@ -163,7 +163,7 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
                 break;
 
             case R.id.newsItemDetailClickMore:
-                Log.d(TAG, "open web view from here");
+                Logger.print(TAG, "open web view from here");
                 Intent intent = new Intent(this, NewsItemWebview.class);
                 intent.putExtra("link", this.intent.getStringExtra("link"));
                 startActivityForResult(intent, REQUEST_CODE);
@@ -173,9 +173,9 @@ public class NewsItemDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "On activity result called");
+        Logger.print(TAG, "On activity result called");
         if (requestCode == REQUEST_CODE) {
-            Log.d(TAG, "Finished web view");
+            Logger.print(TAG, "Finished web view");
             finish();
         }
     }

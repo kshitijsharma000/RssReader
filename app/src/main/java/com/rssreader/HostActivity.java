@@ -10,8 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,21 +35,22 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
     private static final String TAG = "HostActivity";
     private static final int MAX_THREADS = 5;
     public static String mCurrentTab;
-    private NavigationView navigationView;
+    public static boolean SUPPORTS_IMAGE;
+    public static boolean mDebugEnabled;
     private ArrayList<String> mChannelTypes;
     private ArrayList<String> mUrls;
     private ArrayList<String> mTitles;
     private Boolean updateRequired;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
     private DrawerLayout drawer;
     private ProgressBar progressBar;
     private ReaderPagerAdapter pagerAdapter;
-    public static boolean SUPPORTS_IMAGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mDebugEnabled = true;
 
         //setContentView(R.layout.activity_host);
         //Default channel jagran feeds
@@ -83,14 +82,15 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
                 toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawer.setDrawerListener(toggle);
+        drawer.openDrawer(GravityCompat.START);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         //Default settings
         navigationView.setCheckedItem(R.id.nav_jagranHindi);
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         setupViewPager(viewPager, mUrls, mChannelTypes, mTitles);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -103,7 +103,7 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("Homeactivity", "on create options menu");
+        Logger.print("Homeactivity", "on create options menu");
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_home, menu);
         return true;
@@ -115,7 +115,7 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "home activity on options selected");
+        Logger.print(TAG, "home activity on options selected");
         if (item.getItemId() == R.id.menu_settings) {
             Snackbar.make(tabLayout, "Settings not done yet. WIP", Snackbar.LENGTH_SHORT).show();
             return true;
@@ -129,42 +129,65 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_jagranHindi) {
-            if (mCurrentTab != Constants.CHANNEL_NAME_JAGRAN) {
-                mUrls = Constants.mUrlsJagran;
-                mChannelTypes = Constants.mChannelTypesJagran;
-                mTitles = Constants.mTitlesJagran;
-                SUPPORTS_IMAGE = true;
+        switch (id) {
+            case R.id.nav_jagranHindi:
+                if (mCurrentTab.equals(Constants.CHANNEL_NAME_JAGRAN)) {
+                    mUrls = Constants.mUrlsJagran;
+                    mChannelTypes = Constants.mChannelTypesJagran;
+                    mTitles = Constants.mTitlesJagran;
+                    SUPPORTS_IMAGE = true;
 
-                mCurrentTab = Constants.CHANNEL_NAME_JAGRAN;
-                setCurrentTitle(Constants.CHANNEL_JAGRAN_TITLE);
+                    mCurrentTab = Constants.CHANNEL_NAME_JAGRAN;
+                    setCurrentTitle(Constants.CHANNEL_JAGRAN_TITLE);
 
-                pagerAdapter.setItems(mUrls, mChannelTypes, mTitles);
-                Log.d(TAG, "Selected jagran hindi tab");
+                    pagerAdapter.setItems(mUrls, mChannelTypes, mTitles);
+                    Logger.print(TAG, "Selected jagran hindi tab");
 
-                pagerAdapter.notifyDataSetChanged();
-                tabLayout.setTabsFromPagerAdapter(pagerAdapter);
-            }
-        } else if (id == R.id.nav_jagranJosh) {
-            if (mCurrentTab != Constants.CHANNEL_NAME_JAGRANJOSH) {
-                mUrls = Constants.mUrlsJagranJosh;
-                mChannelTypes = Constants.mChannelTypesJagranJosh;
-                mTitles = Constants.mTitlesJagranJosh;
-                SUPPORTS_IMAGE = false;
+                    pagerAdapter.notifyDataSetChanged();
+                    tabLayout.setTabsFromPagerAdapter(pagerAdapter);
+                }
+                break;
+            case R.id.nav_jagranJosh:
+                if (mCurrentTab.equals(Constants.CHANNEL_NAME_JAGRANJOSH)) {
+                    mUrls = Constants.mUrlsJagranJosh;
+                    mChannelTypes = Constants.mChannelTypesJagranJosh;
+                    mTitles = Constants.mTitlesJagranJosh;
+                    SUPPORTS_IMAGE = false;
 
-                mCurrentTab = Constants.CHANNEL_NAME_JAGRANJOSH;
-                setCurrentTitle(Constants.CHANNEL_JAGRANJOSH_TITLE);
+                    mCurrentTab = Constants.CHANNEL_NAME_JAGRANJOSH;
+                    setCurrentTitle(Constants.CHANNEL_JAGRANJOSH_TITLE);
 
-                pagerAdapter.setItems(mUrls, mChannelTypes, mTitles);
-                Log.d(TAG, "Selected jagran josh tab");
+                    pagerAdapter.setItems(mUrls, mChannelTypes, mTitles);
+                    Logger.print(TAG, "Selected jagran josh tab");
 
-                pagerAdapter.notifyDataSetChanged();
-                tabLayout.setTabsFromPagerAdapter(pagerAdapter);
-            }
-        } else if (id == R.id.nav_share) {
+                    pagerAdapter.notifyDataSetChanged();
+                    tabLayout.setTabsFromPagerAdapter(pagerAdapter);
+                }
+                break;
 
-        } else if (id == R.id.nav_send) {
+            case R.id.nav_dainikBhaskar:
+                if (mCurrentTab.equals(Constants.CHANNEL_NAME_DAINIKBHASKAR)) {
+                    mUrls = Constants.mUrlsDainikBhaskar;
+                    mChannelTypes = Constants.mChannelTypesDainikBhaskar;
+                    mTitles = Constants.mTitlesDainikBhaskar;
+                    SUPPORTS_IMAGE = false;
 
+                    mCurrentTab = Constants.CHANNEL_NAME_DAINIKBHASKAR;
+                    setCurrentTitle(Constants.CHANNEL_DAINIKBHASKAR_TITLE);
+
+                    pagerAdapter.setItems(mUrls, mChannelTypes, mTitles);
+                    Logger.print(TAG, "Selected dainik bhaskar tab");
+
+                    pagerAdapter.notifyDataSetChanged();
+                    tabLayout.setTabsFromPagerAdapter(pagerAdapter);
+                }
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
+            default:
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -241,7 +264,7 @@ public class HostActivity extends BaseActivity implements NavigationView.OnNavig
 
         @Override
         public void requestStart() {
-            Log.d("worker", "request Started");
+            Logger.print("worker", "request Started");
         }
 
         @Override

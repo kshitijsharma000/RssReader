@@ -18,6 +18,8 @@
             android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
+            <include layout="@layout/switch_layout" />
+
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 

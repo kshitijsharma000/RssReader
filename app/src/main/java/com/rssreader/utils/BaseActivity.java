@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import com.rssreader.Logger;
 import com.rssreader.R;
 
 /**
@@ -41,7 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("Base Activity", "base activity options items selected");
+        Logger.print("Base Activity", "base activity options items selected");
         return super.onOptionsItemSelected(item);
     }
 

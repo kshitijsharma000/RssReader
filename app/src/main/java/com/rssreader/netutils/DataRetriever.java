@@ -4,7 +4,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONObject;
 
@@ -40,7 +39,7 @@ public class DataRetriever {
         MyRequest mrequest = new MyRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("Data Retriever kshitij: " + response);
+                System.out.println("Data Retriever response" + Thread.currentThread().getName());
 
                 listener.dataRecieved(response);
             }

@@ -56,7 +56,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:text="14 May 2016"
-                android:textSize="10dp"
+                android:textSize="10sp"
                 android:textStyle="italic" />
         </RelativeLayout>
 

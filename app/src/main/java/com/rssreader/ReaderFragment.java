@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -62,7 +61,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
 
         mChannelType = getArguments().getString("channeltype");
         mUrl = getArguments().getString("url");
-        Log.d(TAG, "Channel type received is : " + mChannelType);
+        Logger.print(TAG, "Channel type received is : " + mChannelType);
 
         if (updateListener != null)
             updateListener.showProgressBar();
@@ -136,16 +135,16 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            Log.d(TAG, "Internet is conencted..");
+            Logger.print(TAG, "Internet is conencted..");
             return true;
         }
-        Log.d(TAG, "No Internet");
+        Logger.print(TAG, "No Internet");
         return false;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "reader fragment on options selected");
+        Logger.print(TAG, "reader fragment on options selected");
         switch (item.getItemId()) {
             case R.id.menu_sync:
                 if (checkInternetConnection()) {
@@ -162,7 +161,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
 
     @Override
     public void requestStart() {
-        Log.d(TAG, "Volley Request Started.. " + mChannelType);
+        Logger.print(TAG, "Volley Request Started.. " + mChannelType);
     }
 
     @Override
@@ -187,14 +186,14 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
 
     @Override
     public void error(VolleyError error) {
-        Log.d(TAG, "Volley Error..");
+        Logger.print(TAG, "Volley Error..");
     }
 
 
     interface Clicklistener {
-        public void Onclick(View view, int position);
+        void Onclick(View view, int position);
 
-        public void OnLongclick(View view, int position);
+        void OnLongclick(View view, int position);
     }
 
     interface UpdateListener {
@@ -208,7 +207,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
         @Override
         protected String doInBackground(String... params) {
             mChannel = dbController.readChannelFromDB(mChannelType);
-            Log.d(TAG, "items read from Db : " + mChannel.getItems().size());
+            Logger.print(TAG, "items read from Db : " + mChannel.getItems().size());
             return "Parsing done";
         }
 
@@ -219,7 +218,7 @@ public class ReaderFragment extends Fragment implements DataRetriever.DataListen
             newsItemAdapter.setItemsList(mChannel.getItems());
             newsItemAdapter.notifyDataSetChanged();
 
-            Log.d(TAG, s);
+            Logger.print(TAG, s);
             if (updateListener != null)
                 updateListener.hideProgressBar();
         }

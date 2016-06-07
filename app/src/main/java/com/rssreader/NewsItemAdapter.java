@@ -77,7 +77,7 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.ViewHo
     }
 
     private String getImageUrl(String combinedStr) {
-        //   Log.d(TAG, combinedStr);
+        //   Logger.print(TAG, combinedStr);
         if (HostActivity.SUPPORTS_IMAGE) {
             if ((combinedStr.indexOf('<') == -1 || combinedStr.indexOf('>') == -1)
                     || combinedStr.substring(combinedStr.indexOf('<') + 1, combinedStr.indexOf('>')).length() < 2)
